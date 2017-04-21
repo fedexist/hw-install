@@ -1,0 +1,2 @@
+192.168.1.8 master.localdomain 1 1
+192.168.1.13 node.localdomain 0 0
