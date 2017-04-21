@@ -1,5 +1,5 @@
 
-This script is meant to automate the process of setup for the [https://docs.hortonworks.com/HDPDocuments/Ambari-2.4.2.0/bk_ambari-installation/content/ch_Getting_Ready.html](installation of an Hortonworks cluster) via Ambari.
+This script is meant to automate the process of setup for the [installation of an Hortonworks cluster](https://docs.hortonworks.com/HDPDocuments/Ambari-2.4.2.0/bk_ambari-installation/content/ch_Getting_Ready.html) via Ambari.
 
 It includes:
 
