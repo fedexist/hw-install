@@ -82,7 +82,7 @@ def setup(current_host, _username, ambari_server, _etc_host):
 	ssh_session.logout()
 
 
-def __main__():
+if __name__ == '__main__':
 	# Parsing script arguments
 	parser = argparse.ArgumentParser(description="Set up Hortonworks cluster")
 	parser.add_argument('-p', '--password', help='Password used for every machine of the cluster', required=True)
