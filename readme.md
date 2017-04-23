@@ -27,7 +27,7 @@ It includes:
     cd hw-pre-install
     python setup.py install
     cd /wherever/you/want
-	python -m hw-pre-install -p mypassword -u root -c /path/to/your-cluster.txt -s /helper/scripts/folder
+	python -m hw-pre-install -p mypassword -u root -c /path/to/your-cluster.txt -s /helper/scripts/folder/
 	
 Configuration file must have a line for each machine in the cluster, each one containing machine's IP, FQDN and 0/1 whether the machine will have Ambari Server installed, for example:
 
