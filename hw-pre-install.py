@@ -25,6 +25,7 @@ username = args.username
 configuration = args.configuration
 scripts = args.scripts
 etc_host = ""
+ambariServerFQDN = ""
 
 if not os.path.exists("%saskpass.sh" % scripts):
 	print "Can't find %saskpass.sh!" % scripts
@@ -46,6 +47,8 @@ with configuration as cluster_setup:
 		                FQDN=split_line[1],
 		                AmbariServer=(split_line[2] == '1'))
 		host_list.append(new_host)
+		if new_host.AmbariServer:
+			ambariServerFQDN = new_host.FQDN
 		etc_host += "%s %s\n" % (new_host.IP, new_host.FQDN)
 
 
@@ -63,7 +66,7 @@ def ssh_setup(current_host):
 	
 	print "Executing command: \n\t%s" % shell_command
 	
-	s = subprocess.Popen(shell_command, shell=True)
+	subprocess.Popen(shell_command, shell=True)
 	while not os.path.exists("/%s/.ssh/authorized_keys" % username):
 		time.sleep(1)
 	try:
@@ -104,12 +107,27 @@ def setup(current_host):
 	ssh_session.prompt()
 	ssh_session.sendline("echo \"HOSTNAME=%s\" | cat - >> /etc/sysconfig/network" % current_host.FQDN)
 	ssh_session.prompt()
+	ssh_session.sendline("yum install -y wget && "
+	                     "wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.2.0/ambari.repo "
+	                     "-O /etc/yum.repos.d/ambari.repo")
+	ssh_session.prompt()
 	if current_host.AmbariServer:
-		print "Installing Ambari Repository and Server"
-		ssh_session.sendline("yum install -y wget && "
-		                     "wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.2.0/ambari.repo "
-		                     "-O /etc/yum.repos.d/ambari.repo && "
-		                     "yum install -y ambari-server")
+		print "Installing Ambari Server"
+		ssh_session.sendline("yum install -y ambari-server")
+		ssh_session.prompt()
+		ssh_session.sendline("ambari-server setup --silent")
+		ssh_session.prompt()
+		ssh_session.sendline("ambari-server start")
+		ssh_session.prompt()
+	else:
+		print "Installing Ambari Agent"
+		ssh_session.sendline("yum install -y ambari-agent")
+		ssh_session.prompt()
+		ssh_session.sendline("sed -i /s/hostname=.*/hostname=%s/g /etc/ambari-agent/conf/ambari-agent.ini" % ambariServerFQDN)
+		ssh_session.prompt()
+		ssh_session.sendline("ambari-agent start")
+		ssh_session.prompt()
+
 	print "Logging out"
 	ssh_session.logout()
 
