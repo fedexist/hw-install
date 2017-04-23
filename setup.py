@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
 	name='hw-pre-install',
@@ -9,5 +9,5 @@ setup(
 	author='Federico "fedexist" D\'Ambrosio',
 	author_email='fedexist@gmail.com',
 	description='Script to automate the setup of an Hortonworks cluster.',
-	requires=['pexpect']
+	install_requires=['pexpect']
 )
