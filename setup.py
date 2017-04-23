@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
 	name='hw-pre-install',
 	version='0.0.1',
-	packages=['hw-pre-install'],
+	packages=['hw-pre-install', 'hw-hdfs-test'],
 	url='',
 	license='',
 	author='Federico "fedexist" D\'Ambrosio',
