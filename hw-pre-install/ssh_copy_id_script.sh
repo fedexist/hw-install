@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 export SSH_ASKPASS=$4
 export DISPLAY=:0
