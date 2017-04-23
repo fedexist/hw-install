@@ -10,13 +10,15 @@ from pexpect import run, pxssh
 def ssh_setup(current_host, _username, _password, _scripts):
 	print "ssh-copy-id to current host: %s" % current_host.IP
 	
-	shell_command = "chmod a+x %saskpass.sh " \
-	                "&& %sssh_copy_id_script.sh %s %s %s %s" \
-	                % (_scripts, _scripts, _password, _username, current_host.IP, _scripts + "askpass.sh")
+	shell_command = "%sssh_copy_id_script.sh %s %s %s %s" \
+	                % (_scripts, _password, _username, current_host.IP, _scripts + "askpass.sh")
 	
 	print "Executing command: \n\t%s" % shell_command
 	
+	subprocess.Popen("chmod a+x %sssh_copy_id_script.sh" % _scripts, shell=True)
+	subprocess.Popen("chmod a+x %saskpass.sh" % _scripts, shell=True)
 	subprocess.Popen(shell_command, shell=True)
+	
 	while not os.path.exists("/%s/.ssh/authorized_keys" % _username):
 		time.sleep(1)
 	try:
