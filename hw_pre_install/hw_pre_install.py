@@ -42,6 +42,9 @@ def setup(current_host, _username, ambari_server, _etc_host):
 		except pxssh.ExceptionPxssh as e:
 			print "Error in login: %s" % e
 			exit(-1)
+		print "Increasing maximum number of file descriptors available"
+		ssh_session.sendline("ulimit -n 10000")
+		ssh_session.prompt()
 		print "Installing ntp and enabling ntpd"
 		ssh_session.sendline("yum install -y ntp && systemctl enable ntpd && systemctl start ntpd")
 		ssh_session.prompt()
