@@ -80,7 +80,7 @@ def setup(current_host, _username, ambari_server, _etc_host):
 			ssh_session.sendline("yum install -y ambari-agent")
 			ssh_session.prompt()
 			ssh_session.sendline(
-				"sed -i /s/hostname=.*/hostname=%s/g /etc/ambari-agent/conf/ambari-agent.ini" % ambari_server)
+				"sed -i s/hostname=.*/hostname=%s/g /etc/ambari-agent/conf/ambari-agent.ini" % ambari_server)
 			ssh_session.prompt()
 			ssh_session.sendline("ambari-agent start")
 			ssh_session.prompt()
