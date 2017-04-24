@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-	name='hw-pre-install',
-	version='0.0.1',
-	packages=['hw-pre-install', 'hw-hdfs-test'],
+	name='hw_pre_install',
+	version='0.0.1a',
+	packages=['hw_pre_install', 'hdfs_test'],
 	url='',
 	license='',
 	author='Federico "fedexist" D\'Ambrosio',
