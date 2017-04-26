@@ -13,4 +13,4 @@ for x in range(0,9):
 	times.append(end-start)
 	
 
-print "Average Speed for 1.44 GB in upload: " + sum(times)/len(times)
+print "Average Speed for 1.44 GB in upload: " + str(sum(times)/len(times))
