@@ -1,7 +1,6 @@
 #!/bin/bash
 yum install zip
-cd /tmp/
-wget http://data.gdeltproject.org/events/2003.zip
-zip 2003.zip -d ./unzipped2003
+wget http://data.gdeltproject.org/events/2003.zip /tmp/2003.zip
+unzip 2003.zip
 
 python MC1.44.py
