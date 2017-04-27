@@ -59,9 +59,9 @@ run("ssh-keygen -q -N \"\" ", events={'\w': '\r'})
 # Start setup
 
 # First setup ambari-server
-ssh_setup(ambari_server, username, password, scripts)
+ssh_setup(ambari_server, username, password, scripts, is_ambari_server=True)
 setup(ambari_server, username, None, etc_host, is_ambari_server=True)
 
 for host in host_list:
-	ssh_setup(host, username, password, scripts)
+	ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	setup(host, username, ambari_server.FQDN, etc_host, is_ambari_server=False)

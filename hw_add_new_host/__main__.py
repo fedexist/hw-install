@@ -58,7 +58,7 @@ for old_host in old_host_list:
 	update(old_host, username, new_host_list)
 
 for host in new_host_list:
-	ssh_setup(host, username, password, scripts)
+	ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)
 
 # Overwrite previous configuration file

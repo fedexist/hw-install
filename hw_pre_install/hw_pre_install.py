@@ -5,7 +5,7 @@ from pexpect import run, pxssh
 
 
 # Per ogni host in host_list
-def ssh_setup(_current_host, _username, _password, _scripts):
+def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 	print "ssh-copy-id to current host: %s" % _current_host.IP
 	
 	shell_command = "%s/ssh_copy_id_script.sh %s %s %s %s" \
@@ -13,14 +13,14 @@ def ssh_setup(_current_host, _username, _password, _scripts):
 	
 	print "Executing command: \n\t%s" % shell_command
 	
-	subprocess.Popen("chmod a+x %s/ssh_copy_id_script.sh" % _scripts, shell=True)
-	subprocess.Popen("chmod a+x %s/askpass.sh" % _scripts, shell=True)
+	subprocess.Popen("chmod a+x %sssh_copy_id_script.sh" % _scripts, shell=True)
+	subprocess.Popen("chmod a+x %saskpass.sh" % _scripts, shell=True)
 	subprocess.Popen(shell_command, shell=True)
 	
 	while not os.path.exists("/%s/.ssh/authorized_keys" % _username):
 		time.sleep(1)
 	try:
-		if not _current_host.AmbariServer:
+		if not is_ambari_server:
 			print "scp of keys for current host"
 			run("scp /%s/.ssh/id_rsa /%s/.ssh/id_rsa.pub %s@%s:/%s/.ssh/"
 			    % (_username, _username, _username, _current_host.IP, _username))
