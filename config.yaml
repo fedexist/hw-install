@@ -1,0 +1,13 @@
+ambari-server:
+  IP: 192.168.1.1
+  FQDN: master.localdomain
+hosts:
+  - IP: 192.168.1.2
+    FQDN: node1.localdomain
+  - IP: 192.168.1.3
+    FQDN: node2.localdomain
+new-hosts:
+  - IP: 192.168.1.35
+    FQDN: new_node1.localdomain
+  - IP: 192.168.1.36
+    FQDN: new_node2.localdomain

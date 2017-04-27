@@ -27,21 +27,30 @@ It includes:
     cd hw-pre-install
     python setup.py install
     cd /wherever/you/want
-	python -m hw_pre_install -p mypassword -u root -c /path/to/your-cluster.txt -s /helper/scripts/folder/
+	python -m hw_pre_install -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/
 
-Configuration file must have a line for each machine in the cluster, each one containing machine's IP, FQDN and 0/1 whether the machine will have Ambari Server installed, for example:
+Configuration file is a YAML file, formatted as it follow:
 
-	192.168.1.8 master.localdomain 1
-	192.168.1.9 node1.localdomain 0
-	192.168.1.10 node2.localdomain 0
-
-You will find, then, a config file named ```current_etc_host.txt```, which will be used by the ```hw_add_new_host``` script if you want to add a new host to the cluster.
+    ambari-server:
+      IP: 192.168.1.1
+      FQDN: master.localdomain
+    hosts:
+      - IP: 192.168.1.2
+        FQDN: node1.localdomain
+      - IP: 192.168.1.3
+        FQDN: node2.localdomain
 	
-### To add a new host to  an existing cluster
+### To add a new host to  an existing cluster 
 
-    python -m hw_add_new_host -p mypassword -u root -c /path/to/new-hosts.txt -s /helper/scripts/folder/
-   
-```/path/to/new-hosts.txt``` should be a file formatted as the following:
+Update the YAML configuration file adding a new list with the tag ```new-hosts```, for example:
+    
+    # Original configuration file
+    new-hosts:
+      - IP: 192.168.1.35
+        FQDN: new_node1.localdomain
+      - IP: 192.168.1.36
+        FQDN: new_node2.localdomain
 
-    192.168.1.35 new_node1.localdomain
-    192.168.1.36 new_node2.localdomain
+Then, run
+
+    python -m hw_add_new_host -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/
