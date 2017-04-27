@@ -8,8 +8,8 @@ from pexpect import run, pxssh
 def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 	print "ssh-copy-id to current host: %s" % _current_host.IP
 	
-	shell_command = "%s/ssh_copy_id_script.sh %s %s %s %s" \
-	                % (_scripts, _password, _username, _current_host.IP, _scripts + "/askpass.sh")
+	shell_command = "%sssh_copy_id_script.sh %s %s %s %s" \
+	                % (_scripts, _password, _username, _current_host.IP, _scripts + "askpass.sh")
 	
 	print "Executing command: \n\t%s" % shell_command
 	
@@ -63,7 +63,8 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 		ssh_session.prompt()
 		ssh_session.sendline("echo \"HOSTNAME=%s\" | cat - >> /etc/sysconfig/network" % _current_host.FQDN)
 		ssh_session.prompt()
-		ssh_session.sendline("wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.2.0/ambari.repo "
+		ssh_session.sendline("yum install -y wget && "
+		                     "wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.2.0/ambari.repo "
 		                     "-O /etc/yum.repos.d/ambari.repo")
 		ssh_session.prompt()
 		if is_ambari_server:

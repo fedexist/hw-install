@@ -9,5 +9,4 @@ setup(
 	author='Federico "fedexist" D\'Ambrosio',
 	author_email='fedexist@gmail.com',
 	description='Script to automate the setup of an Hortonworks cluster.',
-	install_requires=['pexpect', 'ruamel.yaml']
 )

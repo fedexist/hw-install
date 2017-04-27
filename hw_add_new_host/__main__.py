@@ -40,13 +40,18 @@ if not os.path.exists("%sssh_copy_id_script.sh" % scripts):
 try:
 	with open(configuration, 'r') as cluster_setup:
 		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
-		etc_host = "%s %s\n" % (config_file['ambari-server']['IP'], config_file['ambari-server']['FQDN'])
+		ambari_server = Host(IP=config_file['ambari-server']['IP'],
+		                     FQDN=config_file['ambari-server']['FQDN'])
+		etc_host = "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
+		
 		for old_host in config_file['hosts']:
 			old_host_list.append(Host(IP=old_host['IP'], FQDN=old_host['FQDN']))
 			etc_host += "%s %s\n" % (old_host['IP'], old_host['FQDN'])
+			
 		for new_host in config_file['new-hosts']:
 			new_host_list.append(Host(IP=new_host['IP'], FQDN=new_host['FQDN']))
 			etc_host += "%s %s\n" % (new_host['IP'], new_host['FQDN'])
+			
 except yaml.YAMLError as err:
 	print "Error in configuration file!\n" + err.message
 	exit(-1)

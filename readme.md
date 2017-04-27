@@ -23,10 +23,14 @@ It includes:
 
 ## Usage
 
-    git clone https://github.com/fedexist/hw-pre-install.git
-    cd hw-pre-install
-    python setup.py install
-    cd /wherever/you/want
+1. Install ```pip```
+2. ```git clone https://github.com/fedexist/hw-pre-install.git```
+3. ```cd hw-pre-install```
+4. ```make init```
+
+Then,
+
+    cd /wherever/you/want/
 	python -m hw_pre_install -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/
 
 Configuration file is a YAML file, formatted as it follow:
@@ -54,3 +58,5 @@ Update the YAML configuration file adding a new list with the tag ```new-hosts``
 Then, run
 
     python -m hw_add_new_host -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/
+    
+Your original configuration file will be overwritten with the new cluster configuration.
