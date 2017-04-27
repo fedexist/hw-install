@@ -8,7 +8,7 @@ for x in range(0,9):
 	start = timer()
 	subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f 2003.csv /user/admin/testing/2003.csv", shell=True)
 	end = timer()
-	subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm /user/admin/testing/2003.csv", shell=True)
+	subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -skipTrash /user/admin/testing/2003.csv", shell=True)
 	times.append(end-start)
 	
 
