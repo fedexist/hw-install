@@ -12,8 +12,8 @@ parser.add_argument('-u', '--username', help='Username used for every machine of
 parser.add_argument('-c', '--configuration', help="Path to the file containing the cluster configuration",
 	                    type=file, required=True)
 parser.add_argument('-s', '--scripts', help="Path to the helper scripts askpass.sh and ssh_copy_id_script.sh"
-	                                            "(default: './')")
-parser.set_defaults(username='root', password='', configuration='', scripts='./')
+                                            " default './helpers/")
+parser.set_defaults(username='root', password='', configuration='', scripts='./helpers/')
 args = parser.parse_args()
 	
 Host = namedtuple("Host", "IP FQDN AmbariServer")
@@ -48,10 +48,16 @@ with configuration as cluster_setup:
 		if new_host.AmbariServer:
 			ambari_server_fqdn = new_host.FQDN
 		etc_host += "%s %s\n" % (new_host.IP, new_host.FQDN)
-	
+
+# Save current configuration
+with open('./current_etc_host.txt', 'w') as current_config:
+	current_config.writelines([ambari_server_fqdn, '\n', etc_host])
+
+
 print "Generating key pair"
 run("ssh-keygen -q -N \"\" ", events={'\w': '\r'})
-	
+
+# Start setup
 for host in host_list:
 	ssh_setup(host, username, password, scripts)
-	setup(host, username, ambari_server_fqdn, etc_host)
+	setup(host, username, ambari_server_fqdn, etc_host, host.AmbariServer)
