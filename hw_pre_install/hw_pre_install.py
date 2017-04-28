@@ -31,17 +31,22 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 	try:
 		ssh_session = pxssh.pxssh(timeout=7200)
-		# ssh_session.PROMPT = '[PEXPECT]\\$ '
 		print "Logging in to current host: %s" % _current_host.IP
 		try:
-			ssh_session.login(_current_host.IP, _username, ssh_key="/%s/.ssh/id_rsa" % _username,
-			                  # auto_prompt_reset=False
-			                  )
+			ssh_session.login(_current_host.IP, _username, ssh_key="/%s/.ssh/id_rsa" % _username)
 		except pxssh.ExceptionPxssh as e:
 			print "Error in login: %s" % e
 			exit(-1)
 		print "Increasing maximum number of file descriptors available"
-		ssh_session.sendline("ulimit -n 10000")
+		ssh_session.sendline("echo \"fs.file-max = 10000\" | cat - >> /etc/sysctl.conf")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"* soft nofile 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"* hard nofile 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"* soft nproc 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"* hard nproc 10000\" | cat - >> /etc/security/limits.conf")
 		ssh_session.prompt()
 		print "Installing ntp and enabling ntpd"
 		ssh_session.sendline("yum install -y ntp && systemctl enable ntpd && systemctl start ntpd")
