@@ -1,11 +1,11 @@
 import os
 from collections import namedtuple
 import argparse
-from hw_pre_install.hw_pre_install import ssh_setup, update, setup
 from ruamel import yaml
-
+from hw_pre_install import hw_pre_install
 # This script is used to setup the addition of new hosts
 # to an existing Ambari server
+
 
 parser = argparse.ArgumentParser("Setup addition new host to existing ambari-server")
 parser.add_argument('-p', '--password', help='Password used for every machine of the cluster', required=True)
@@ -42,6 +42,7 @@ try:
 		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
 		ambari_server = Host(IP=config_file['ambari-server']['IP'],
 		                     FQDN=config_file['ambari-server']['FQDN'])
+		old_host_list.append(ambari_server)
 		etc_host = "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
 		
 		for old_host in config_file['hosts']:
@@ -60,11 +61,11 @@ except IOError as err:
 	exit(-1)
 
 for old_host in old_host_list:
-	update(old_host, username, new_host_list)
+	hw_pre_install.update(old_host, username, new_host_list)
 
 for host in new_host_list:
-	ssh_setup(host, username, password, scripts, is_ambari_server=False)
-	setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)
+	hw_pre_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
+	hw_pre_install.setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)
 
 # Overwrite previous configuration file
 

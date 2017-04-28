@@ -18,7 +18,7 @@ It includes:
 							Path to the file containing the cluster configuration
 	  -s SCRIPTS, --scripts SCRIPTS
 							Path to the helper scripts askpass.sh and
-							ssh_copy_id_script.sh(default: './')
+							ssh_copy_id_script.sh(default: './helpers/')
 							
 
 ## Usage
