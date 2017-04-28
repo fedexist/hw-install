@@ -9,10 +9,10 @@ parser = argparse.ArgumentParser(description="Test throughput")
 parser.add_argument('-u', '--URL', help='URL of the dataset to use for testing, the file must be a single csv in a zip archive, if this parameter is not specified the dataset is assumed to have been downloaded already (default: blank)')
 parser.add_argument('-f', '--flush', help="With this parameter the script will only clean up the HDFS", action="store_true")
 parser.add_argument('-fa', '--flushAll', help="With this parameter the script will clean up the HDFS and local files", action="store_true")
-parser.set_defaults(url='')
+parser.set_defaults(URL='')
 args = parser.parse_args()
 
-url = args.url
+URL = args.URL
 flush = args.flush
 flushAll = args.flushAll
 
@@ -24,10 +24,10 @@ if (flush or flushAll):
 	process.wait()
 	sys.exit();
 	
-if (url != ''):
+if (URL != ''):
 	process = subprocess.Popen("yum install zip", shell=True)
 	process.wait()
-	process = subprocess.Popen("wget "+ url +" -O test.zip", shell=True)
+	process = subprocess.Popen("wget "+ URL +" -O test.zip", shell=True)
 	process.wait()
 	process = subprocess.Popen("unzip test.zip", shell=True)
 	process.wait()
