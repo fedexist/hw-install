@@ -17,26 +17,35 @@ flush = args.flush
 flushAll = args.flushAll
 
 if (flushAll):
-	subprocess.Popen("rm -f test.csv", shell=True)
+	process = subprocess.Popen("rm -f test.csv", shell=True)
+	process.wait()
 if (flush or flushAll):
-	subprocess.Popen("sh flush.sh", shell=True)
+	process = subprocess.Popen("sh flush.sh", shell=True)
+	process.wait()
 	sys.exit();
 	
 if (url != ''):
-	subprocess.Popen("yum install zip", shell=True)
-	subprocess.Popen("wget "+ url +" -O test.zip", shell=True)
-	subprocess.Popen("unzip test.zip", shell=True)
-	subprocess.Popen("mv *.csv test.csv", shell=True)
-	subprocess.Popen("rm -f test.zip", shell=True)
+	process = subprocess.Popen("yum install zip", shell=True)
+	process.wait()
+	process = subprocess.Popen("wget "+ url +" -O test.zip", shell=True)
+	process.wait()
+	process = subprocess.Popen("unzip test.zip", shell=True)
+	process.wait()
+	process = subprocess.Popen("mv *.csv test.csv", shell=True)
+	process.wait()
+	process = subprocess.Popen("rm -f test.zip", shell=True)
+	process.wait()
 	subprocess.Popen("sh prepareTest.sh "+url, shell=True)
 	
 times = []
 
 for x in range(0,9):
 	start = timer()
-	subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f test.csv /user/admin/testing/test.csv", shell=True)
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f test.csv /user/admin/testing/test.csv", shell=True)
+	process.wait()
 	end = timer()
-	subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -f -skipTrash /user/admin/testing/test.csv", shell=True)
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -f -skipTrash /user/admin/testing/test.csv", shell=True)
+	process.wait()
 	times.append(end-start)
 	
 print "Average Speed for " + str(os.path.getsize("./test.csv")/pow(1024^3)) +" GB in upload: " + str(sum(times)/len(times))
