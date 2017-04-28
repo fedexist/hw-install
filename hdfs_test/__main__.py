@@ -1,6 +1,7 @@
 import argparse
 import subprocess
 import os
+import sys
 from timeit import default_timer as timer
 
 # Parsing script arguments
@@ -15,7 +16,7 @@ if (flushAll == 'y'):
 	subprocess.Popen("rm -f test.csv", shell=True)
 if (flush == 'y' or flushAll == 'y'):
 	subprocess.Popen("sh flush.sh", shell=True)
-	return;
+	sys.exit();
 	
 if (url != ''):
 	subprocess.Popen("sh prepareTest.sh "+url, shell=True)
