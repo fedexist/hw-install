@@ -53,14 +53,14 @@ if reading:
 	
 	for x in range(0,9):
 		start = timer()
-		process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -get -f /user/admin/testing/test.csv test.csv", shell=True)
+		process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -get /user/admin/testing/test.csv test.csv", shell=True)
 		process.wait()
 		end = timer()
 		process = subprocess.Popen("rm -f test.csv", shell=True)
 		process.wait()
 		times.append(end-start)
 	
-	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -get -f /user/admin/testing/test.csv test.csv", shell=True)
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -get /user/admin/testing/test.csv test.csv", shell=True)
 	process.wait()
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -f -skipTrash /user/admin/testing/test.csv", shell=True)
 	process.wait()
