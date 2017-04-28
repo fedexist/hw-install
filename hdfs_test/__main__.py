@@ -11,9 +11,9 @@ parser.add_argument('-fa', '--flushAll', help="With this parameter the script wi
 parser.set_defaults(url='', flush='n', flushAll='n')
 args = parser.parse_args()
 
-if (flushAll = 'y'):
+if (flushAll == 'y'):
 	subprocess.Popen("rm -f test.csv", shell=True)
-if (flush = 'y' or flushAll = 'y'):
+if (flush == 'y' or flushAll = 'y'):
 	subprocess.Popen("sh flush.sh", shell=True)
 	return;
 	
