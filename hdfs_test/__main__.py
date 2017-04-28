@@ -25,6 +25,8 @@ if (flush or flushAll):
 if (url != ''):
 	subprocess.Popen("sh prepareTest.sh "+url, shell=True)
 	
+times = []
+
 for x in range(0,9):
 	start = timer()
 	subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f test.csv /user/admin/testing/test.csv", shell=True)
