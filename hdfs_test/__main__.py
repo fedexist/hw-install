@@ -35,7 +35,6 @@ if (URL != ''):
 	process.wait()
 	process = subprocess.Popen("rm -f test.zip", shell=True)
 	process.wait()
-	subprocess.Popen("sh prepareTest.sh "+url, shell=True)
 	
 times = []
 
