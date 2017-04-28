@@ -23,6 +23,11 @@ if (flush or flushAll):
 	sys.exit();
 	
 if (url != ''):
+	subprocess.Popen("yum install zip", shell=True)
+	subprocess.Popen("wget "+ url +" -O test.zip", shell=True)
+	subprocess.Popen("unzip test.zip", shell=True)
+	subprocess.Popen("mv *.csv test.csv", shell=True)
+	subprocess.Popen("rm -f test.zip", shell=True)
 	subprocess.Popen("sh prepareTest.sh "+url, shell=True)
 	
 times = []
