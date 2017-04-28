@@ -20,7 +20,7 @@ if (flushAll):
 	process = subprocess.Popen("rm -f test.csv", shell=True)
 	process.wait()
 if (flush or flushAll):
-	process = subprocess.Popen("sh flush.sh", shell=True)
+	process = subprocess.Popen("sh ./hdfs_test/flush.sh", shell=True)
 	process.wait()
 	sys.exit();
 	
