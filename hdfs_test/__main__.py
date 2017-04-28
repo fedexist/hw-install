@@ -60,6 +60,8 @@ if reading:
 		process.wait()
 		times.append(end-start)
 	
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -get -f /user/admin/testing/test.csv test.csv", shell=True)
+	process.wait()
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -f -skipTrash /user/admin/testing/test.csv", shell=True)
 	process.wait()
 	
