@@ -7,14 +7,18 @@ from timeit import default_timer as timer
 # Parsing script arguments
 parser = argparse.ArgumentParser(description="Test throughput")
 parser.add_argument('-u', '--URL', help='URL of the dataset to use for testing, the file must be a single csv in a zip archive, if this parameter is not specified the dataset is assumed to have been downloaded already (default: blank)')
-parser.add_argument('-f', '--flush', help="With this parameter the script will only clean up the HDFS, use 'y' to set it on, n otherwise (default: n)")
-parser.add_argument('-fa', '--flushAll', help="With this parameter the script will clean up the HDFS and local files, use 'y' to set it on, n otherwise (default: n)")
-parser.set_defaults(url='', flush='n', flushAll='n')
+parser.add_argument('-f', '--flush', help="With this parameter the script will only clean up the HDFS")
+parser.add_argument('-fa', '--flushAll', help="With this parameter the script will clean up the HDFS and local files")
+parser.set_defaults(url='')
 args = parser.parse_args()
 
-if (flushAll == 'y'):
+url = parser.url
+flush = parser.flush
+flushAll = parser.flushAll
+
+if (flushAll):
 	subprocess.Popen("rm -f test.csv", shell=True)
-if (flush == 'y' or flushAll == 'y'):
+if (flush or flushAll):
 	subprocess.Popen("sh flush.sh", shell=True)
 	sys.exit();
 	
