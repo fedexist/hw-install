@@ -37,6 +37,7 @@ if not os.path.exists("%sssh_copy_id_script.sh" % scripts):
 	print "Can't find %sssh_copy_id_script.sh!" % scripts
 	exit(-1)
 
+print "Processing configuration file"
 try:
 	with open(configuration, 'r') as cluster_setup:
 		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
@@ -60,9 +61,11 @@ except IOError as err:
 	print "Cannot find configuration file!\n" + err.message
 	exit(-1)
 
+print "Updating old hosts"
 for old_host in old_host_list:
 	hw_pre_install.update(old_host, username, new_host_list)
 
+print "Setting up new hosts"
 for host in new_host_list:
 	hw_pre_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	hw_pre_install.setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)

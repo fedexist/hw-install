@@ -13,8 +13,8 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 	
 	print "Executing command: \n\t%s" % shell_command
 	
-	subprocess.Popen("chmod a+x %sssh_copy_id_script.sh" % _scripts, shell=True)
-	subprocess.Popen("chmod a+x %saskpass.sh" % _scripts, shell=True)
+	subprocess.Popen("chmod 755 %sssh_copy_id_script.sh" % _scripts, shell=True)
+	subprocess.Popen("chmod 755 %saskpass.sh" % _scripts, shell=True)
 	subprocess.Popen(shell_command, shell=True)
 	
 	while not os.path.exists("/%s/.ssh/authorized_keys" % _username):
