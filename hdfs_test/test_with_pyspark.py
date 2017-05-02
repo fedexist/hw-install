@@ -10,8 +10,8 @@ APP_NAME = " HelloWorld of Big Data"
 ##OTHER FUNCTIONS/CLASSES
 
 def main(sc):
-	sc.setLogLevel("WARN")
-	f = open("/root/hw_pre_install/test.csv")
+   sc.setLogLevel("WARN")
+   f = open("/root/hw_pre_install/test.csv")
    #textFile = sc.textFile("file:///root/hw_pre_install/test.csv")
    textFile = sc.serialize(f)
    textFile.saveAsTextFile("hdfs:///user/admin/testing")
