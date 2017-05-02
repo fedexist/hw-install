@@ -1,10 +1,10 @@
-
-This script is meant to automate the process of setup for the [installation of an Hortonworks cluster](https://docs.hortonworks.com/HDPDocuments/Ambari-2.4.2.0/bk_ambari-installation/content/ch_Getting_Ready.html) via Ambari.
+These script are meant to automate the process of setup for the [installation of an Hortonworks cluster](https://docs.hortonworks.com/HDPDocuments/Ambari-2.4.2.0/bk_ambari-installation/content/ch_Getting_Ready.html) via Ambari and testing of its capabilities.
 
 It includes:
 
  * Passwordless SSH machines' setup
  * /etc/hosts and /etc/sysconfig/network autocomplete
+ * Throughput and file integrity testing
 
 ## Command line arguments
 
@@ -60,3 +60,40 @@ Then, run
     python -m hw_add_new_host -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/
     
 Your original configuration file will be overwritten with the new cluster configuration.
+
+### To use testing scripts
+
+Firstly, run 
+	sh hdfs_test/create.sh
+	
+Then to check file integrity on HDFS you may run
+	sh hdfs_test/test.sh
+	
+To test the file throughput run instead ```python -m hdfs_test``` with the use of the following arguments
+
+	  -h, --help         show this help message and exit
+	  -u URL, --URL URL  URL of the dataset to use for testing, the file must be a
+						 single csv in a zip archive, if this parameter is not
+						 specified, the dataset is assumed to have been downloaded
+						 already (default: blank)
+	  -r, --reading      With this parameter the script will test the reading
+						 throughput of the HDFS instead of the default writing
+	  -f, --flush        With this parameter the script will only clean up the
+						 HDFS
+	  -fa, --flushAll    With this parameter the script will clean up the HDFS and
+						 local files
+
+For the first run, thus, use 
+
+	python -m hdfs_test -u https:\\your.url
+	
+	this will download the dataset and test the writing throughput of the hdfs (suggested dataset: http://data.gdeltproject.org/events/2003.zip)
+
+To test again use
+	
+	python -m hdfs_test
+	
+After that to test the reading throughput use
+
+	python -m hdfs_test -r
+	

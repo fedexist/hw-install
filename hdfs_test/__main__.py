@@ -75,5 +75,5 @@ else:
 		process.wait()
 		times.append(end-start)
 	
-print "Average Speed for %s GB in upload: %s" \
+print "Average Speed for %s GB: %s" \
         % (str(os.path.getsize("./test.csv")/pow(1024, 3)), str(sum(times)/len(times)))
