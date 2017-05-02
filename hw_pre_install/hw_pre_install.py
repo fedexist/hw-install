@@ -1,7 +1,7 @@
 import os
 import subprocess
 import time
-from pexpect import run, pxssh
+from pexpect import pxssh
 
 
 # Per ogni host in host_list
@@ -22,8 +22,9 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 	try:
 		if not is_ambari_server:
 			print "scp of keys for current host"
-			run("scp -q -o StrictHostKeyChecking=no /%s/.ssh/id_rsa /%s/.ssh/id_rsa.pub %s@%s:/%s/.ssh/"
-			    % (_username, _username, _username, _current_host.IP, _username))
+			process = subprocess.Popen("scp -q -o StrictHostKeyChecking=no /%s/.ssh/id_rsa /%s/.ssh/id_rsa.pub %s@%s:/%s/.ssh/"
+			                           % (_username, _username, _username, _current_host.IP, _username), shell=True)
+			process.wait()
 	except pxssh.ExceptionPxssh as e:
 		print "Error in ssh login:\n" + e.get_trace()
 
