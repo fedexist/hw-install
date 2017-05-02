@@ -10,7 +10,7 @@ APP_NAME = " HelloWorld of Big Data"
 
 def main(sc):
    textFile = sc.textFile("file:///hw_pre_install/test.csv")
-   textFile.saveAsTextFile("hdfs://user/admin/testing/test.csv")
+   textFile.saveAsTextFile("hdfs:///user/admin/testing/test.csv")
 
 if __name__ == "__main__":
 
