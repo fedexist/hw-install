@@ -17,7 +17,7 @@ def main(sc):
    textFile = sc.textFile("file:///root/hw-pre-install/test.csv")
    end = timer()
    
-	print "Scrittura: " + str(end-start)
+   print "Scrittura: " + str(end-start)
    #textFile = sc.serialize(f)
    #textFile.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 
@@ -25,7 +25,7 @@ def main(sc):
    textFile = sc.textFile("hdfs:///user/admin/testing/test.csv")
    end = timer()
    
-	print "Lettura: " + str(end-start)
+   print "Lettura: " + str(end-start)
 
 if __name__ == "__main__":
 
