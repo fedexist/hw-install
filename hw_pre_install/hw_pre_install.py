@@ -17,8 +17,8 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 	subprocess.Popen("chmod 755 %saskpass.sh" % _scripts, shell=True)
 	subprocess.Popen(shell_command, shell=True)
 	
-	while not os.path.exists("/%s/.ssh/authorized_keys" % _username):
-		time.sleep(1)
+	#while not os.path.exists("/%s/.ssh/authorized_keys" % _username):
+	time.sleep(25)
 	try:
 		if not is_ambari_server:
 			print "scp of keys for current host"

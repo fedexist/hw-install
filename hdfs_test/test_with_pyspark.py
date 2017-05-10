@@ -22,16 +22,22 @@ def main(sc):
 	textFile.count()
 	end = timer()
 	
-	print "Scrittura: " + str(end - start)
-	# textFile = sc.serialize(f)
-	# textFile.saveAsTextFile("hdfs:///user/admin/testing/tmp")
+	print "Copia da Unix: " + str(end - start)
+
 	
 	start = timer()
-	textFile = sc.textFile("hdfs:///user/admin/testing/test.csv").cache()
+	textFile = sc.serialize(f)
+	textFile.saveAsTextFile("hdfs:///user/admin/testing/tmp")
+	end = timer()
+	
+	print "Scrittura su HDFS: " + str(end - start)
+	
+	start = timer()
+	textFile = sc.textFile("hdfs:///user/admin/testing/tmp").cache()
 	textFile.count()
 	end = timer()
 	
-	print "Lettura: " + str(end - start)
+	print "Lettura da HDFS e scrittura su RAM: " + str(end - start)
 
 
 if __name__ == "__main__":
