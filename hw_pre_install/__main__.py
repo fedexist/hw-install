@@ -41,7 +41,7 @@ try:
 		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
 		ambari_server = Host(IP=config_file['ambari-server']['IP'],
 		                     FQDN=config_file['ambari-server']['FQDN'])
-		host_list.append(ambari_server)
+		etc_host += "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
 		for host in config_file['hosts']:
 			new_host = Host(IP=host['IP'],
 				            FQDN=host['FQDN'])
@@ -60,9 +60,15 @@ run("ssh-keygen -q -N \"\" ", events={'\w': '\r'})
 # Start setup
 
 # First setup ambari-server
+print "----------------------"
+print "Step 1 of %s " % str(len(host_list) + 1)
+print "----------------------"
 ssh_setup(ambari_server, username, password, scripts, is_ambari_server=True)
 setup(ambari_server, username, None, etc_host, is_ambari_server=True)
 
 for host in host_list:
+	print "----------------------"
+	print "Step %s of %s " % (str(host_list.index(host) + 1), str(len(host_list) + 1))
+	print "----------------------"
 	ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	setup(host, username, ambari_server.FQDN, etc_host, is_ambari_server=False)

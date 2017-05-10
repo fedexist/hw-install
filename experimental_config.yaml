@@ -1,0 +1,27 @@
+ambari-server:
+  IP: 192.168.1.1
+  FQDN: master-1.localdomain
+hosts:
+  - IP: 192.168.1.2
+    FQDN: node1.localdomain
+  - IP: 192.168.1.3
+    FQDN: node2.localdomain
+host-groups:
+  - name: master-group
+    hosts:
+      - fqdn: master-1.localdomain
+      - fqdn: master-2.localdomain
+    components:
+      - name: SPARK_CLIENT
+      - name: HBASE
+      - name: YARN_CLIENT
+      - name: HDFS_CLIENT
+      - name:
+      - name:
+      - name:
+      - name:
+  - name: host-group-name
+    hosts:
+    components:
+    - name: SPARK_CLIENT
+    - name: HBASE
