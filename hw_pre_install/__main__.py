@@ -41,6 +41,7 @@ try:
 		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
 		ambari_server = Host(IP=config_file['ambari-server']['IP'],
 		                     FQDN=config_file['ambari-server']['FQDN'])
+		host_list.append(ambari_server)
 		for host in config_file['hosts']:
 			new_host = Host(IP=host['IP'],
 				            FQDN=host['FQDN'])
