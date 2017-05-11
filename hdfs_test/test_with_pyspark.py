@@ -26,7 +26,6 @@ def main(sc):
 
 	
 	start = timer()
-	textFile = sc.serialize(f)
 	textFile.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	end = timer()
 	
