@@ -1,0 +1,3 @@
+[submodule "python-ambariclient"]
+	path = python-ambariclient
+	url = https://github.com/jimbobhickville/python-ambariclient.git
