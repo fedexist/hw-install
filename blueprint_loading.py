@@ -1,7 +1,7 @@
 from ambariclient.client import Ambari
 from ruamel import yaml
 
-with open("experimental_config.yaml", 'r') as cluster_setup:
+with open("config.yaml", 'r') as cluster_setup:
 	config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
 
 client_ip = "ip"
@@ -21,11 +21,7 @@ for host in config_file['hosts']:
 
 client = Ambari(client_ip, port=8080, username='admin', password='admin')
 
-# with open("/root/.ssh/id_rsa") as f:          should not be needed
-# 	ssh_key = f.read()
-#
-# client.bootstrap(hosts=hosts, ssh_key=ssh_key, user='root').wait()
-#
+bp = {"stack_name": "HDP", "stack_version": '2.5'}
+client.blueprints(bp_name).create(Blueprints=bp, host_groups=host_groups).wait()
 
-client.clusters.create(name, blueprint=bp_name, host_groups=host_groups, default_password=passwd)\
-	.wait(timeout=1800, interval=30)
+client.clusters.create(name, blueprint=bp_name, default_password=passwd).wait(timeout=1800, interval=30)

@@ -31,10 +31,15 @@ It includes:
 Then,
 
     cd /wherever/you/want/
-	python -m hw_pre_install -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/
+	python -m hw_pre_install -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/ -d your-secret-password
 
 Configuration file is a YAML file, formatted as it follow:
 
+    cluster-name: cluster_name
+    blueprint-name: blueprint_name
+    Blueprints:
+        stack_name: HDP
+        stack_version: 2.5
     ambari-server:
       IP: 192.168.1.1
       FQDN: master.localdomain
@@ -43,8 +48,17 @@ Configuration file is a YAML file, formatted as it follow:
         FQDN: node1.localdomain
       - IP: 192.168.1.3
         FQDN: node2.localdomain
+    host-groups:
+      - name: master
+        hosts:
+          - fqdn: master.localdomain
+        components:
+          - name: YARN_CLIENT
+          - name: HDFS_CLIENT
+          - name: AMBARI_SERVER
+
 	
-### To add a new host to  an existing cluster 
+### To add a new host to  an existing cluster [CURRENTLY NOT WORKING]
 
 Update the YAML configuration file adding a new list with the tag ```new-hosts```, for example:
     

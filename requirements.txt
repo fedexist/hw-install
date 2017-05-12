@@ -1,3 +1,4 @@
 ruamel.yaml
 pexpect
 setuptools
+python-ambariclient

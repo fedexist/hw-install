@@ -1,18 +1,90 @@
+cluster-name: cluster_name
+blueprint-name: blueprint_name
+Blueprints:
+  stack_name: HDP
+  stack_version: 2.5
 ambari-server:
-  IP: 10.132.0.2
-  FQDN:
+  IP: 192.168.1.1
+  FQDN: master-1.localdomain
 hosts:
-  - IP: 10.132.0.3
-    FQDN:
-  - IP: 10.132.0.4
-    FQDN:
-  - IP: 10.132.0.5
-    FQDN:
-  - IP: 10.132.0.6
-    FQDN:
-  - IP: 10.132.0.7
-    FQDN:
-  - IP: 10.132.0.8
-    FQDN:
-  - IP: 10.132.0.9
-    FQDN:
+  - IP: 192.168.1.2
+    FQDN: slave-1.localdomain
+  - IP: 192.168.1.3
+    FQDN: slave-2.localdomain
+  - IP: 192.168.1.4
+    FQDN: slave-3.localdomain
+  - IP: 192.168.1.5
+    FQDN: slave-4.localdomain
+  - IP: 192.168.1.6
+    FQDN: master-2.localdomain
+  - IP: 192.168.1.7
+    FQDN: helper-2.localdomain
+  - IP: 192.168.1.8
+    FQDN: helper-1.localdomain
+host-groups:
+  - name: master-1
+    hosts:
+      - fqdn: master-1.localdomain
+    components:
+      - name: YARN_CLIENT
+      - name: HDFS_CLIENT
+      - name: HIVE_SERVER
+      - name: METRICS_MONITOR
+      - name: INFRA_SOLR_CLIENT
+      - name: HIVE_METASTORE
+      - name: NAMENODE
+      - name: TEZ_CLIENT
+      - name: ZOOKEEPER_CLIENT
+      - name: PIG
+      - name: SPARK2_JOBHISTORYSERVER
+      - name: WEBHCAT_SERVER
+      - name: MAPREDUCE2_CLIENT
+      - name: ZOOKEEPER_SERVER
+      - name: AMBARI_SERVER
+      - name: INFRA_SOLR
+      - name: HIVE_CLIENT
+      - name: METRICS_COLLECTOR
+      - name: METRICS_GRAFANA
+  - name: master-2
+    hosts:
+      - fqdn: master-2.localdomain
+    components:
+      - name: SECONDARY_NAMENODE
+      - name: HDFS_CLIENT
+      - name: ZOOKEEPER_SERVER
+      - name: HISTORYSERVER
+      - name: METRICS_MONITOR
+      - name: HIVE_METASTORE
+      - name: TEZ_CLIENT
+      - name: APP_TIMELINE_SERVER
+      - name: RESOURCEMANAGER
+  - name: slaves
+    hosts:
+      - fqdn: slave-1.localdomain
+      - fqdn: slave-2.localdomain
+      - fqdn: slave-3.localdomain
+      - fqdn: slave-4.localdomain
+    components:
+      - name: NODEMANAGER
+      - name: DATANODE
+      - name: METRICS_MONITOR
+  - name: helpers
+    hosts:
+      - fqdn: helper-1.localdomain
+      - fqdn: helper-2.localdomain
+    components:
+      - name: NODEMANAGER
+      - name: YARN_CLIENT
+      - name: HDFS_CLIENT
+      - name: SPARK2_CLIENT
+      - name: METRICS_MONITOR
+      - name: INFRA_SOLR_CLIENT
+      - name: TEZ_CLIENT
+      - name: ZOOKEEPER_CLIENT
+      - name: HCAT
+      - name: PIG
+      - name: MAPREDUCE2_CLIENT
+      - name: SLIDER
+      - name: DATANODE
+      - name: HIVE_CLIENT
+
