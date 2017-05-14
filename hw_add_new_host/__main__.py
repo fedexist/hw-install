@@ -1,12 +1,26 @@
+# Copyright 2017 Federico D'Ambrosio, Edoardo Ferrante
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+# http : //www.apache. org / licenses / LICENSE -2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+
 import os
 from collections import namedtuple
 import argparse
 from ruamel import yaml
 from hw_install import hw_install
 from datetime import datetime
-# This script is used to setup the addition of new hosts
-# to an existing Ambari server
 
+# This script is used to setup the addition of new hosts
+# to an existing Hortonworks cluster
 
 parser = argparse.ArgumentParser("Setup addition new host to existing ambari-server")
 parser.add_argument('-p', '--password', help='Password used for every machine of the cluster', required=True)
