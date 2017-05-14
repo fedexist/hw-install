@@ -2,11 +2,12 @@ import subprocess
 import sys
 from timeit import default_timer as timer
 
-repeat = sys.argv[0]
+repeat = 10
 times = list()
 
-if repeat == "":
-	repeat = 10
+if len(sys.argv) > 1:
+	repeat = int(sys.argv[1])
+	
 
 for x in range(1, int(repeat)):
 	start = timer()
