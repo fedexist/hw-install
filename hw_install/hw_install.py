@@ -118,5 +118,5 @@ def install_cluster(ambari_server, cluster_name, blueprint_name, blueprints, hos
 	client.blueprints(blueprint_name).create(Blueprints=blueprints, host_groups=host_groups).wait()
 	
 	print "Creating cluster"
-	client.clusters.create(cluster_name, blueprint=blueprint_name, default_password=default_password) \
-		.wait(timeout=1800, interval=30)
+	client.clusters.create(cluster_name, blueprint=blueprint_name,
+	                       host_groups=host_groups, default_password=default_password).wait(timeout=1800, interval=30)
