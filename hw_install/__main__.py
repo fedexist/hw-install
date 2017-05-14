@@ -2,8 +2,7 @@ import argparse
 import os
 from ruamel import yaml
 from collections import namedtuple
-from hw_pre_install import ssh_setup, setup
-from ambariclient.client import Ambari
+from hw_install import ssh_setup, setup, install_cluster
 from pexpect import run
 
 
@@ -92,7 +91,9 @@ for host in host_list:
 	ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	setup(host, username, ambari_server.FQDN, etc_host, is_ambari_server=False)
 
-client = Ambari(ambari_server.FQDN, port=8080, username='admin', password='admin')
-client.blueprints(blueprint_name).create(Blueprints=blueprints, host_groups=host_groups).wait()
-client.clusters.create(cluster_name, blueprint=blueprint_name, default_password=default_password)\
-	.wait(timeout=1800, interval=30)
+print "----------------------"
+print "Now installing specified cluster"
+print "----------------------"
+
+install_cluster(ambari_server, cluster_name=cluster_name, blueprint_name=blueprint_name, blueprints=blueprints,
+                host_groups=host_groups, default_password=default_password)

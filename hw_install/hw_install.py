@@ -1,6 +1,7 @@
 import subprocess
 import time
 from pexpect import pxssh
+from ambariclient.client import Ambari
 
 
 # Per ogni host in host_list
@@ -107,3 +108,15 @@ def update(old_host, _username, new_host_list):
 			ssh_session.sendline("echo \"%s %s\" | cat - >> /etc/hosts" % (new_host.IP, new_host.FQDN))
 			ssh_session.prompt()
 		ssh_session.logout()
+
+
+def install_cluster(ambari_server, cluster_name, blueprint_name, blueprints, host_groups, default_password):
+	print "Opening connection to Ambari server"
+	client = Ambari(ambari_server.FQDN, port=8080, username='admin', password='admin')
+	
+	print "Registering specified blueprint"
+	client.blueprints(blueprint_name).create(Blueprints=blueprints, host_groups=host_groups).wait()
+	
+	print "Creating cluster"
+	client.clusters.create(cluster_name, blueprint=blueprint_name, default_password=default_password) \
+		.wait(timeout=1800, interval=30)

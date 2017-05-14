@@ -24,16 +24,16 @@ It includes:
 ## Usage
 
 1. Install ```pip```
-2. ```git clone https://github.com/fedexist/hw-pre-install.git```
-3. ```cd hw-pre-install```
+2. ```git clone https://github.com/fedexist/hw-install.git```
+3. ```cd hw-install```
 4. ```make init```
 
 Then,
 
     cd /wherever/you/want/
-	python -m hw_pre_install -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/ -d your-secret-password
+	python -m hw_install -p mypassword -u root -c /path/to/your-cluster.yaml -s /helper/scripts/folder/ -d your-secret-password
 
-Configuration file is a YAML file, formatted as it follow:
+Configuration file is a YAML file, formatted as it follows:
 
     cluster-name: cluster_name
     blueprint-name: blueprint_name
@@ -78,9 +78,11 @@ Your original configuration file will be overwritten with the new cluster config
 ### To use testing scripts
 
 Firstly, run 
+
 	sh hdfs_test/create.sh
 	
 Then to check file integrity on HDFS you may run
+
 	sh hdfs_test/test.sh
 	
 To test the file throughput run instead ```python -m hdfs_test``` with the use of the following arguments

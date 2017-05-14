@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser(description="Test writing or reading throughput
 parser.add_argument('-u', '--URL', help='URL of the dataset to use for testing, the file must be a single csv '
                                         'in a zip archive, if this parameter is not specified the dataset is assumed '
                                         'to have been downloaded already (default: blank)')
-parser.add_argument('-r', '--reading', help="With this parameter the script will test the reading throughput of the HDFS instead of the default writing",
-                    action="store_true")									
+parser.add_argument('-r', '--reading', help="With this parameter the script will test the reading throughput of the HDFS"
+                                            " instead of the default writing", action="store_true")
 parser.add_argument('-f', '--flush', help="With this parameter the script will only clean up the HDFS",
                     action="store_true")
 parser.add_argument('-fa', '--flushAll', help="With this parameter the script will clean up the HDFS and local files",
@@ -29,7 +29,7 @@ if flushAll:
 if flush or flushAll:
 	process = subprocess.Popen("sh flush.sh", shell=True)
 	process.wait()
-	sys.exit();
+	sys.exit()
 	
 if URL != '':
 	process = subprocess.Popen("yum install zip", shell=True)
@@ -51,7 +51,7 @@ if reading:
 	process = subprocess.Popen("rm -f test.csv", shell=True)
 	process.wait()
 	
-	for x in range(0,9):
+	for x in range(0, 9):
 		start = timer()
 		process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -get /user/admin/testing/test.csv test.csv", shell=True)
 		process.wait()
@@ -66,7 +66,7 @@ if reading:
 	process.wait()
 	
 else:
-	for x in range(0,9):
+	for x in range(0, 9):
 		start = timer()
 		process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f test.csv /user/admin/testing/test.csv", shell=True)
 		process.wait()

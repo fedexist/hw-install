@@ -2,7 +2,8 @@ import os
 from collections import namedtuple
 import argparse
 from ruamel import yaml
-from hw_pre_install import hw_pre_install
+from hw_install import hw_install
+from datetime import datetime
 # This script is used to setup the addition of new hosts
 # to an existing Ambari server
 
@@ -63,18 +64,18 @@ except IOError as err:
 
 print "Updating old hosts"
 for old_host in old_host_list:
-	hw_pre_install.update(old_host, username, new_host_list)
+	hw_install.update(old_host, username, new_host_list)
 
 print "Setting up new hosts"
 for host in new_host_list:
-	hw_pre_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
-	hw_pre_install.setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)
+	hw_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
+	hw_install.setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)
 
-# Overwrite previous configuration file
+# Write configuration file
 
-print "Overwriting previous configuration file"
+print "Writing new configuration file"
 
-with open(configuration, 'w') as cluster_setup:
+with open("config" + str(datetime.now()).split('.')[0] + ".yaml", 'w') as cluster_setup:
 	new_hosts = config_file.pop('new-hosts')
 	for new_host in new_hosts:
 		config_file['hosts'].append(new_host)

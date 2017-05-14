@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-	name='hw_pre_install',
+	name='hw_install',
 	version='0.0.2',
-	packages=['hw_pre_install', 'hdfs_test', 'hw_add_new_host'],
+	packages=['hw_install', 'hdfs_test', 'hw_add_new_host'],
 	url='',
 	license='',
 	author='Federico "fedexist" D\'Ambrosio',
