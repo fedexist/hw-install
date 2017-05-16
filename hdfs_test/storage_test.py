@@ -23,12 +23,14 @@ if len(sys.argv) > 1:
 	repeat = int(sys.argv[1])
 	
 
-for x in range(1, int(repeat)):
+for x in range(1, repeat):
+	print "Step %s of %s" % (str(x), str(repeat))
 	start = timer()
-	process = subprocess.Popen("dd bs=1M count=10240 if=/dev/urandom of=foo.dat")
+	process = subprocess.Popen("dd bs=1M count=10240 if=/dev/urandom of=foo.dat", shell=True)
 	process.wait()
 	end = timer()
 	times.append(end - start)
-	subprocess.Popen("rm -rf foo.dat")
+	print "Time elapsed: %s" % (str(end - start))
+	subprocess.Popen("rm -rf foo.dat", shell=True)
 
-print "Scrittura su disco media: " + str(sum(times)/len(times))
+print "Average time for disk writing: " + str(sum(times)/len(times))
