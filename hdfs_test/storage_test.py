@@ -22,7 +22,7 @@ times = list()
 if len(sys.argv) > 1:
 	repeat = int(sys.argv[1])
 
-if os.path.isfile("foo.dat"):
+if not os.path.isfile("foo.dat"):
 	process = subprocess.Popen("dd bs=1M count=10240 if=/dev/urandom of=foo.dat", shell=True)
 	process.wait()
 
