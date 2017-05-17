@@ -13,7 +13,7 @@
 
 
 import subprocess
-import sys
+import sys, os
 from timeit import default_timer as timer
 
 repeat = 10
@@ -21,16 +21,20 @@ times = list()
 
 if len(sys.argv) > 1:
 	repeat = int(sys.argv[1])
-	
+
+if os.path.isfile("foo.dat"):
+	process = subprocess.Popen("dd bs=1M count=10240 if=/dev/urandom of=foo.dat", shell=True)
+	process.wait()
+
 
 for x in range(1, repeat):
 	print "Step %s of %s" % (str(x), str(repeat))
 	start = timer()
-	process = subprocess.Popen("dd bs=1M count=10240 if=/dev/urandom of=foo.dat", shell=True)
+	process = subprocess.Popen("dd bs=1M count=10240 if=foo.dat of=foo%s.dat" % str(x), shell=True)
 	process.wait()
 	end = timer()
 	times.append(end - start)
 	print "Time elapsed: %s" % (str(end - start))
-	subprocess.Popen("rm -rf foo.dat", shell=True)
+	subprocess.Popen("rm -rf foo%s.dat" % str(x), shell=True)
 
 print "Average time for disk writing: " + str(sum(times)/len(times))
