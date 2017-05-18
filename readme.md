@@ -8,18 +8,21 @@ It includes:
 
 ## Command line arguments
 
-	  -h, --help            show this help message and exit
-	  -p PASSWORD, --password PASSWORD
-							Password used for every machine of the cluster
-	  -u USERNAME, --username USERNAME
-							Username used for every machine of the cluster
-							(default: root)
-	  -c CONFIGURATION, --configuration CONFIGURATION
-							Path to the file containing the cluster configuration
-	  -s SCRIPTS, --scripts SCRIPTS
-							Path to the helper scripts askpass.sh and
-							ssh_copy_id_script.sh(default: './helpers/')
-							
+        -h, --help          show this help message and exit
+        -p PASSWORD, --password PASSWORD
+                            Password used for every machine of the cluster
+        -u USERNAME, --username USERNAME
+                            Username used for every machine of the cluster
+                            (default: root)
+        -c CONFIGURATION, --configuration CONFIGURATION
+                            Path to the file containing the cluster configuration
+        -s SCRIPTS, --scripts SCRIPTS
+                            Path to the helper scripts askpass.sh and
+                            ssh_copy_id_script.sh(default: './helpers/')
+        -d DEFAULTPASSWORD, --defaultpassword DEFAULTPASSWORD
+                            This is the default password for any Hortonworks
+                            service default 'secret-password'
+				
 
 ## Usage
 
