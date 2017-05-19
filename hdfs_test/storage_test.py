@@ -13,28 +13,31 @@
 
 
 import subprocess
-import sys, os
+import sys
 from timeit import default_timer as timer
 
 repeat = 10
-times = list()
+reading_times = list()
+writing_times = list()
 
 if len(sys.argv) > 1:
 	repeat = int(sys.argv[1])
 
-if not os.path.isfile("foo.dat"):
-	process = subprocess.Popen("dd bs=1M count=10240 if=/dev/urandom of=foo.dat", shell=True)
-	process.wait()
-
-
 for x in range(1, repeat):
 	print "Step %s of %s" % (str(x), str(repeat))
 	start = timer()
-	process = subprocess.Popen("dd bs=1M count=10240 if=foo.dat of=foo%s.dat" % str(x), shell=True)
+	process = subprocess.Popen("sync; dd bs=10M count=1000 if=/dev/zero of=foo.dat; sync", shell=True)
 	process.wait()
 	end = timer()
-	times.append(end - start)
-	print "Time elapsed: %s" % (str(end - start))
+	writing_times.append(end - start)
+	print "Time elapsed in writing: %s" % (str(end - start))
+	start = timer()
+	process = subprocess.Popen("dd bs=10M count=1000 if=foo.dat of=/dev/null", shell=True)
+	process.wait()
+	end = timer()
+	reading_times.append(end - start)
+	print "Time elapsed in reading: %s" % (str(end - start))
 	subprocess.Popen("rm -rf foo%s.dat" % str(x), shell=True)
 
-print "Average time for disk writing: " + str(sum(times)/len(times))
+print "Average time for disk writing: " + str(sum(writing_times)/len(writing_times))
+print "Average time for disk reading: " + str(sum(reading_times)/len(reading_times))
