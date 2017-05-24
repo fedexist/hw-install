@@ -72,10 +72,6 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 		print "Disabling SELinux and setting umask"
 		ssh_session.sendline("setenforce 0 && echo umask 0022 >> /etc/profile")
 		ssh_session.prompt()
-		ssh_session.sendline("cat /etc/resolv.conf >> /etc/resolv1.conf && "
-		                     "rm -rf /etc/resolv.conf && "
-		                     "mv /etc/resolv1.conf /etc/resolv.conf")
-		ssh_session.prompt()
 		print "Setting hostname"
 		ssh_session.sendline("hostnamectl set-hostname %s" % _current_host.FQDN)
 		print "Updating /etc/hosts"
@@ -89,18 +85,18 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 		ssh_session.prompt()
 		
 		# ##fix dns resolution
-		# print "Updating ifcfg"
-		# ssh_session.sendline("echo \"DNS1='212.19.96.2'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
-		# ssh_session.prompt()
-		# ssh_session.sendline("echo \"DNS2='212.19.108.1'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
-		# ssh_session.prompt()
-		# ssh_session.sendline("echo \"DNS3='8.8.8.8'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
-		# ssh_session.prompt()
-		# ssh_session.sendline("echo \"DNS4='8.8.4.4'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
-		# ssh_session.prompt()
-		# ssh_session.sendline("systemctl restart network.service")
-		# ssh_session.prompt()
-		# time.sleep(5) #wait for network restart to take place
+		print "Updating ifcfg"
+		ssh_session.sendline("echo \"DNS1='212.19.96.2'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"DNS2='212.19.108.1'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"DNS3='8.8.8.8'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
+		ssh_session.prompt()
+		ssh_session.sendline("echo \"DNS4='8.8.4.4'\" | cat - >> /etc/sysconfig/network-scripts/ifcfg-eth0")
+		ssh_session.prompt()
+		ssh_session.sendline("systemctl restart network.service")
+		ssh_session.prompt()
+		time.sleep(5) #wait for network restart to take place
 		
 		ssh_session.sendline("yum install -y wget && "
 		                     "wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.2.0/ambari.repo "
