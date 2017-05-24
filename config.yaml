@@ -49,6 +49,7 @@ host-groups:
     hosts:
       - fqdn: master-2.localdomain
     components:
+      - name: SPARK2_CLIENT
       - name: SECONDARY_NAMENODE
       - name: HDFS_CLIENT
       - name: ZOOKEEPER_SERVER
@@ -58,6 +59,8 @@ host-groups:
       - name: TEZ_CLIENT
       - name: APP_TIMELINE_SERVER
       - name: RESOURCEMANAGER
+      - name: HCAT
+      - name: SLIDER
   - name: slaves
     hosts:
       - fqdn: slave-1.localdomain
@@ -68,23 +71,3 @@ host-groups:
       - name: NODEMANAGER
       - name: DATANODE
       - name: METRICS_MONITOR
-  - name: helpers
-    hosts:
-      - fqdn: helper-1.localdomain
-      - fqdn: helper-2.localdomain
-    components:
-      - name: NODEMANAGER
-      - name: YARN_CLIENT
-      - name: HDFS_CLIENT
-      - name: SPARK2_CLIENT
-      - name: METRICS_MONITOR
-      - name: INFRA_SOLR_CLIENT
-      - name: TEZ_CLIENT
-      - name: ZOOKEEPER_CLIENT
-      - name: HCAT
-      - name: PIG
-      - name: MAPREDUCE2_CLIENT
-      - name: SLIDER
-      - name: DATANODE
-      - name: HIVE_CLIENT
-

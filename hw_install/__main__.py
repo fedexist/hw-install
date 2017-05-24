@@ -100,7 +100,7 @@ setup(ambari_server, username, ambari_server.FQDN, etc_host, is_ambari_server=Tr
 
 for host in host_list:
 	print "----------------------"
-	print "Step %s of %s " % (str(host_list.index(host) + 1), str(len(host_list) + 1))
+	print "Step %s of %s " % (str(host_list.index(host) + 2), str(len(host_list) + 1))
 	print "----------------------"
 	ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	setup(host, username, ambari_server.FQDN, etc_host, is_ambari_server=False)

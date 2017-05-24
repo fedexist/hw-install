@@ -1,27 +1,33 @@
-from ambariclient.client import Ambari
+import argparse
+from collections import namedtuple
 from ruamel import yaml
+from hw_install import hw_install
 
-with open("config.yaml", 'r') as cluster_setup:
+parser = argparse.ArgumentParser(description="Install cluster from blueprints")
+parser.add_argument('-d', '--defaultpassword', help="This is the default password for any Hortonworks service"
+                                                    " default 'secret-password'", required=True)
+parser.add_argument('-c', '--configuration', help="Path to the yaml configuration file", required=True)
+parser.set_defaults(defaultpassword='secret-password')
+
+args = parser.parse_args()
+
+configuration = args.configuration
+default_password = args.defaultpassword
+
+Host = namedtuple("Host", "IP FQDN")
+
+with open(configuration, 'r') as cluster_setup:
 	config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
+	ambari_server = Host(IP=config_file['ambari-server']['IP'],
+	                     FQDN=config_file['ambari-server']['FQDN'])
+	
+	host_groups = config_file['host-groups']
+	for group in host_groups:
+		group['cardinality'] = str(len(group['hosts']))
+	
+	blueprints = config_file["Blueprints"]
+	blueprint_name = config_file["blueprint-name"]
+	cluster_name = config_file["cluster-name"]
 
-client_ip = "ip"
-name = "GrebeCluster"
-bp_name = "GCBlueprint"
-host_groups = config_file['host-groups']
-
-for group in host_groups:
-	group['cardinality'] = str(len(group['hosts']))
-
-passwd = "grebeteam"
-
-hosts = [config_file['ambari-server']['FQDN']]
-
-for host in config_file['hosts']:
-	hosts.append(host['FQDN'])
-
-client = Ambari(client_ip, port=8080, username='admin', password='admin')
-
-bp = {"stack_name": "HDP", "stack_version": '2.5'}
-client.blueprints(bp_name).create(Blueprints=bp, host_groups=host_groups).wait()
-
-client.clusters.create(name, blueprint=bp_name, default_password=passwd).wait(timeout=1800, interval=30)
+hw_install.install_cluster(ambari_server, cluster_name=cluster_name, blueprint_name=blueprint_name,
+                           blueprints=blueprints, host_groups=host_groups, default_password=default_password)
