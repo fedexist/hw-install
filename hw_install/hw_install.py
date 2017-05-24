@@ -75,7 +75,7 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 		print "Setting hostname"
 		ssh_session.sendline("hostnamectl set-hostname %s" % _current_host.FQDN)
 		print "Updating /etc/hosts"
-		ssh_session.sendline("sed -i /%s.+/d /etc/hosts" % _current_host.IP)
+		ssh_session.sendline("sed -i /%s.*/d /etc/hosts" % _current_host.IP)
 		ssh_session.prompt()
 		for etc_host_line in _etc_host.split('\n'):
 			ssh_session.sendline("echo \"%s\" | cat - >> /etc/hosts" % etc_host_line)
