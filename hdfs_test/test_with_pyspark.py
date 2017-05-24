@@ -51,6 +51,7 @@ def main(sc):
 		process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
 		process.wait()
 		
+	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	print "Scrittura su HDFS: " + str(sum(times)/len(times))
 
 	times = []
