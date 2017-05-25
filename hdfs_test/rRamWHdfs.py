@@ -25,13 +25,14 @@ APP_NAME = " HelloWorld of Big Data"
 
 
 # OTHER FUNCTIONS/CLASSES
+##HADOOP_USER_NAME=hdfs hadoop fs -put -f ../test.csv /user/admin/testing/test.csv
 
 
 def main(sc):
 	sc.setLogLevel("WARN")
 	# f = open("/root/hw_install/test.csv")
 	
-	text_file = sc.textFile("file:///root/hw-install/test.csv").cache()
+	text_file = sc.textFile("hdfs:///user/admin/testing/test.csv").cache()
 	
 	start = timer()
 	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
