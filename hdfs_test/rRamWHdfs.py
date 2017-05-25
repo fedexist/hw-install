@@ -31,41 +31,16 @@ def main(sc):
 	sc.setLogLevel("WARN")
 	# f = open("/root/hw_install/test.csv")
 	
-	times = []
-	
-	for x in range(0, 9):
-		start = timer()
-		text_file = sc.textFile("file:///root/hw-install/test.csv").cache()
-		text_file.count()
-		end = timer()
-		times.append(end-start)
-	print "Lettura da Unix e scrittura su RAM: " + str(sum(times)/len(times))
 
-	times = []
-	
-	for x in range(0, 9):
-		start = timer()
-		text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
-		end = timer()
-		times.append(end-start)
-		process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
-		process.wait()
+	start = timer()
+	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
+	end = timer()
+	times.append(end-start)
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
+	process.wait()
 		
 	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	print "Scrittura su HDFS: " + str(sum(times)/len(times))
-
-	times = []
-	
-	for x in range(0, 9):
-		start = timer()
-		text_file = sc.textFile("hdfs:///user/admin/testing/tmp").cache()
-		text_file.count()
-		end = timer()
-		times.append(end-start)
-	
-	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
-	process.wait()
-	print "Lettura da HDFS e scrittura su RAM: " + str(sum(times)/len(times))
 
 
 if __name__ == "__main__":
