@@ -63,6 +63,8 @@ def main(sc):
 		end = timer()
 		times.append(end-start)
 	
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
+	process.wait()
 	print "Lettura da HDFS e scrittura su RAM: " + str(sum(times)/len(times))
 
 
