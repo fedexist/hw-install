@@ -33,7 +33,7 @@ def main(sc):
 	
 
 	start = timer()
-	text_file = sc.textFile("file:///root/hw-install/test.csv").cache()
+	text_file = sc.textFile("file:///root/hw-install/test.csv")
 	text_file.count()
 	end = timer()
 	print "Lettura da Unix e scrittura su RAM: " + str(end-start)
@@ -42,7 +42,7 @@ def main(sc):
 if __name__ == "__main__":
 	# Configure Spark
 	conf = SparkConf().setAppName(APP_NAME)
-	conf = conf.setMaster("local[*]")
+	#conf = conf.setMaster("local[*]")
 	sc = SparkContext(conf=conf)
 	# Execute Main functionality
 	main(sc)

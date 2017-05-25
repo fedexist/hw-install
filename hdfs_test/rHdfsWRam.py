@@ -37,13 +37,13 @@ def main(sc):
 	end = timer()
 		
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
-	print "Lettura da HDFS e scrittura su RAM: " + str(sum(times)/len(times))
+	print "Lettura da HDFS e scrittura su RAM: " + str(end-start)
 
 
 if __name__ == "__main__":
 	# Configure Spark
 	conf = SparkConf().setAppName(APP_NAME)
-	conf = conf.setMaster("local[*]")
+	#conf = conf.setMaster("local[*]")
 	sc = SparkContext(conf=conf)
 	# Execute Main functionality
 	main(sc)

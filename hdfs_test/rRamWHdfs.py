@@ -31,22 +31,19 @@ def main(sc):
 	sc.setLogLevel("WARN")
 	# f = open("/root/hw_install/test.csv")
 	
-
+	text_file = sc.textFile("file:///root/hw-install/test.csv").cache()
+	
 	start = timer()
 	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	end = timer()
-	times.append(end-start)
-	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
-	process.wait()
-		
-	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
-	print "Scrittura su HDFS: " + str(sum(times)/len(times))
+
+	print "Scrittura su HDFS: " + str(end-start)
 
 
 if __name__ == "__main__":
 	# Configure Spark
 	conf = SparkConf().setAppName(APP_NAME)
-	conf = conf.setMaster("local[*]")
+	#conf = conf.setMaster("local[*]")
 	sc = SparkContext(conf=conf)
 	# Execute Main functionality
 	main(sc)
