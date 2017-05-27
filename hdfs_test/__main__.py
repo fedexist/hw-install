@@ -101,17 +101,17 @@ if loading:
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -copyFromLocal -f ./dataset /user/admin/testing/dataset", shell=True)
 	process.wait()
 	
-times = []
-
 if testing:
 
 	
 	for x in range(0, int(ti)):
-		start = timer()
-		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rHdfsWRam.py" % sparkArguments, shell=True)
+		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rHdfsWRam.py" % sparkArguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		process.wait()
-		end = timer()
-		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rRamWHdfs.py" % sparkArguments, shell=True)
+		out,err = process.communicate()
+		
+		print out[::-1]
+		
+		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rRamWHdfs.py" % sparkArguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		process.wait()
-		times.append(end-start)
+		out,err = process.communicate()
 
