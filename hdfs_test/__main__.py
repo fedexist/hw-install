@@ -23,19 +23,22 @@ parser = argparse.ArgumentParser(description="Test writing or reading throughput
 parser.add_argument('-u', '--URL', help='URL of the dataset to use for testing, the file must be a single csv '
                                         'in a zip archive, if this parameter is not specified the dataset is assumed '
                                         'to have been downloaded already (default: blank)')
+parser.add_argument('-z', '--zip', help="Says what unpacker to use, zip or tar (default: zip)")
+parser.add_argument('-l', '--load', help="Use this parameter to load the dataset to hdfs")
 parser.add_argument('-r', '--reading', help="With this parameter the script will test the reading throughput of the HDFS"
                                             " instead of the default writing", action="store_true")
 parser.add_argument('-f', '--flush', help="With this parameter the script will only clean up the HDFS",
                     action="store_true")
 parser.add_argument('-fa', '--flushAll', help="With this parameter the script will clean up the HDFS and local files",
                     action="store_true")
-parser.set_defaults(URL='')
+parser.set_defaults(URL='', zip='zip')
 args = parser.parse_args()
 
 URL = args.URL
 reading = args.reading
 flush = args.flush
 flushAll = args.flushAll
+loading = args.load
 
 if flushAll:
 	process = subprocess.Popen("rm -f test.csv", shell=True)
@@ -45,20 +48,38 @@ if flush or flushAll:
 	process.wait()
 	sys.exit()
 	
-if URL != '':
-	process = subprocess.Popen("yum install zip", shell=True)
-	process.wait()
-	process = subprocess.Popen("wget %s -O test.zip" % URL, shell=True)
-	process.wait()
-	process = subprocess.Popen("unzip test.zip", shell=True)
-	process.wait()
-	process = subprocess.Popen("mv *.csv test.csv", shell=True)
-	process.wait()
-	process = subprocess.Popen("rm -f test.zip", shell=True)
-	process.wait()
 	
-times = []
+#http://static.echonest.com/millionsongsubset_full.tar.gz
+if URL != '':
+	if zip = 'zip':
+		process = subprocess.Popen("yum install zip", shell=True)
+		process.wait()
+		process = subprocess.Popen("wget %s -O test.zip" % URL, shell=True)
+		process.wait()
+		process = subprocess.Popen("unzip test.zip", shell=True)
+		process.wait()
+		process = subprocess.Popen("mv *.csv test.csv", shell=True)
+		process.wait()
+		process = subprocess.Popen("rm -f test.zip", shell=True)
+		process.wait()
+	else:
+		process = subprocess.Popen("yum install tar", shell=True)
+		process.wait()
+		process = subprocess.Popen("wget %s -O test.tar.gz" % URL, shell=True)
+		process.wait()
+		process = subprocess.Popen("tar -xvzf test.tar.gz", shell=True)
+		process.wait()
+		process = subprocess.Popen("mv *.csv test.csv", shell=True)
+		process.wait()
+		process = subprocess.Popen("rm -f test.tar.gz", shell=True)
+		process.wait()
 
+if loading:
+	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f test.csv /user/admin/testing/test.csv", shell=True)
+	process.wait()
+		
+times = []
+'''
 if reading:
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -put -f test.csv /user/admin/testing/test.csv", shell=True)
 	process.wait()
@@ -91,3 +112,4 @@ else:
 	
 print "Average Speed for %s GB: %s" \
         % (str(os.path.getsize("./test.csv")/pow(1024, 3)), str(sum(times)/len(times)))
+'''
