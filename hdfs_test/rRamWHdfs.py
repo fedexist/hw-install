@@ -32,13 +32,21 @@ def main(sc):
 	sc.setLogLevel("WARN")
 	# f = open("/root/hw_install/test.csv")
 	
-	text_file = sc.textFile("hdfs:///user/admin/testing/test.csv").cache()
+	joinable = []
+	
+	cmd = ['hdfs', 'dfs', '-find', 'user/admin/testing/dataset', '-name', '*.csv']
+	files = subprocess.check_output(cmd).strip().split('\n')
+	for path in files:
+		print path
+		#joinable.append(sc.textFile(path))
+		
+	'''text_file = sc.textFile("hdfs:///user/admin/testing/test.csv").cache()
 	
 	start = timer()
 	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	end = timer()
 
-	print "Scrittura su HDFS: " + str(end-start)
+	print "Scrittura su HDFS: " + str(end-start)'''
 
 
 if __name__ == "__main__":
