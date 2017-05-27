@@ -34,7 +34,7 @@ parser.add_argument('-f', '--flush', help="With this parameter the script will o
 
 parser.add_argument('-fa', '--flushAll', help="With this parameter the script will clean up the HDFS and local files",
                     action="store_true")
-parser.add_argument('-ti', '--testIterations',	help='Number of iterations done for testing (default: 1')				
+parser.add_argument('-ti', '--testIterations',	help='Number of iterations done for testing (default: 1)')				
 parser.add_argument('-sa', '--sparkArguments', help='The parameters to be sent to spark (default: "--master yarn --num-executors 1 --executor-memory 1G")')
 parser.set_defaults(URL='', zip='zip', testIterations = '1', sparkArguments='--master yarn --num-executors 1 --executor-memory 1G')
 args = parser.parse_args()
@@ -69,6 +69,7 @@ if flush or flushAll:
 	
 	
 #http://static.echonest.com/millionsongsubset_full.tar.gz
+#https://archive.ics.uci.edu/ml/machine-learning-databases/00344/Activity%20recognition%20exp.zip
 if URL != '':
 	if zip == 'zip':
 		process = subprocess.Popen("yum install zip", shell=True)
@@ -113,6 +114,3 @@ if testing:
 		process.wait()
 		times.append(end-start)
 
-	
-print "Average Speed for %s GB: %s" \
-        % (str(os.path.getsize("./test.csv")/pow(1024, 3)), str(sum(times)/len(times)))
