@@ -36,17 +36,19 @@ def main(sc):
 	
 	cmd = ['hdfs', 'dfs', '-find', '/user/admin/testing/dataset', '-name', '*.csv']
 	files = subprocess.check_output(cmd).strip().split('\n')
+	
+	filesPaths = ""
+	
 	for path in files:
-		print path
-		#joinable.append(sc.textFile(path))
+		filesPaths = filesPaths + path + ","
 		
-	'''text_file = sc.textFile("hdfs:///user/admin/testing/test.csv").cache()
+	text_file = sc.textFile(filesPaths).cache()
 	
 	start = timer()
 	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	end = timer()
 
-	print "Scrittura su HDFS: " + str(end-start)'''
+	print "Scrittura su HDFS: " + str(end-start)
 
 
 if __name__ == "__main__":
