@@ -103,7 +103,8 @@ if loading:
 	
 if testing:
 
-	
+	wTimes = []
+	rTimes = []
 	for x in range(0, int(ti)):
 	
 		start = timer()
@@ -118,7 +119,11 @@ if testing:
 		findIntBegin = out.find(findString) + len(findString)
 		findIntEnd = findIntBegin + len(str(end-start))
 		
-		print out[findIntBegin:findIntEnd]
+		out = out[findIntBegin:findIntEnd]
+		
+		print out
+		
+		wTimes.append(float(out))
 
 		start = timer()
 		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rHdfsWRam.py" % sparkArguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -132,4 +137,13 @@ if testing:
 		findIntBegin = out.find(findString) + len(findString)
 		findIntEnd = findIntBegin + len(str(end-start))
 		
-		print out[findIntBegin:findIntEnd]
+		
+		out = out[findIntBegin:findIntEnd]
+		
+		print out
+		
+		rTimes.append(float(out))
+		
+	print "Scrittura su Hdfs tramite Spark compiuta in un tempo medio di " + str(len(wTimes)/sum(wTimes)) + "\n"
+
+	print "Lettura da Hdfs tramite Spark compiuta in un tempo medio di " + str(len(rTimes)/sum(rTimes)) + "\n"

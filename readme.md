@@ -80,39 +80,46 @@ Your original configuration file will be overwritten with the new cluster config
 
 ### To use testing scripts
 
-Firstly, run 
+To test the file throughput run ```python -m hdfs_test``` with the use of the following arguments
 
-	sh hdfs_test/create.sh
-	
-Then to check file integrity on HDFS you may run
-
-	sh hdfs_test/test.sh
-	
-To test the file throughput run instead ```python -m hdfs_test``` with the use of the following arguments
-
-	  -h, --help         show this help message and exit
-	  -u URL, --URL URL  URL of the dataset to use for testing, the file must be a
-						 single csv in a zip archive, if this parameter is not
-						 specified, the dataset is assumed to have been downloaded
-						 already (default: blank)
-	  -r, --reading      With this parameter the script will test the reading
-						 throughput of the HDFS instead of the default writing
-	  -f, --flush        With this parameter the script will only clean up the
-						 HDFS
-	  -fa, --flushAll    With this parameter the script will clean up the HDFS and
-						 local files
+  -h, --help            show this help message and exit
+  -fr, --firstRun       With this parameter the script will prepare Hdfs
+                        environment for testing
+  -u URL, --URL URL     URL of the dataset to use for testing, the file must
+                        be one or more CSVs in a zip or tar.gz archive or a
+                        plain csv, if this parameter is not specified the
+                        dataset, it is assumed to have been downloaded already
+                        and present in dataset folder(default: blank)
+  -z ZIP, --zip ZIP     Says what unpacker to use, zip, tar or none (default:
+                        zip)
+  -l, --load            Use this parameter to load the dataset to hdfs
+  -t, --testing         With this parameter the script will test the reading
+                        and writing throughput of the HDFS
+  -f, --flush           With this parameter the script will only clean up the
+                        HDFS
+  -fa, --flushAll       With this parameter the script will clean up the HDFS
+                        and local files
+  -ti TESTITERATIONS, --testIterations TESTITERATIONS
+                        Number of iterations done for testing (default: 1)
+  -sa SPARKARGUMENTS, --sparkArguments SPARKARGUMENTS
+                        The parameters to be sent to spark (default: "--master
+                        yarn --num-executors 1 --executor-memory 1G")
 
 For the first run, thus, use 
 
+	python -m hdfs_test -fr
+	
+Then you may use 
+
 	python -m hdfs_test -u https:\\your.url
 	
-	this will download the dataset and test the writing throughput of the hdfs (suggested dataset: http://data.gdeltproject.org/events/2003.zip)
+	this will download the dataset on your host (suggested dataset: 'https://archive.ics.uci.edu/ml/machine-learning-databases/00344/Activity%20recognition%20exp.zip')
 
-To test again use
+To test throughput on an average of two tests use
 	
-	python -m hdfs_test
+	python -m hdfs_test -t -ti 2
 	
-After that to test the reading throughput use
+Example of use, first run, download dataset, load it to Hdfs and test throughput on 4 Yarn nodes with 2G each of Ram, on an average of 10 tests.
 
-	python -m hdfs_test -r
+	python -m hdfs_test -fr -u 'https://archive.ics.uci.edu/ml/machine-learning-databases/00344/Activity%20recognition%20exp.zip' -z zip -l -t -ti 10 -sa "--master yarn --num-executors 4 --executor-memory 2G"
 	
