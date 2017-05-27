@@ -24,7 +24,8 @@ parser.add_argument('-u', '--URL', help='URL of the dataset to use for testing, 
                                         'in a zip archive, if this parameter is not specified the dataset is assumed '
                                         'to have been downloaded already (default: blank)')
 parser.add_argument('-z', '--zip', help="Says what unpacker to use, zip or tar (default: zip)")
-parser.add_argument('-l', '--load', help="Use this parameter to load the dataset to hdfs")
+parser.add_argument('-l', '--load', help="Use this parameter to load the dataset to hdfs",
+                    action="store_true")
 parser.add_argument('-r', '--reading', help="With this parameter the script will test the reading throughput of the HDFS"
                                             " instead of the default writing", action="store_true")
 parser.add_argument('-f', '--flush', help="With this parameter the script will only clean up the HDFS",
@@ -51,7 +52,7 @@ if flush or flushAll:
 	
 #http://static.echonest.com/millionsongsubset_full.tar.gz
 if URL != '':
-	if zip = 'zip':
+	if zip == 'zip':
 		process = subprocess.Popen("yum install zip", shell=True)
 		process.wait()
 		process = subprocess.Popen("wget %s -O test.zip" % URL, shell=True)
