@@ -34,7 +34,7 @@ def main(sc):
 	
 	joinable = []
 	
-	cmd = ['hdfs', 'dfs', '-find', 'user/admin/testing/dataset', '-name', '*.csv']
+	cmd = ['hdfs', 'dfs', '-find', '/user/admin/testing/dataset', '-name', '*.csv']
 	files = subprocess.check_output(cmd).strip().split('\n')
 	for path in files:
 		print path
