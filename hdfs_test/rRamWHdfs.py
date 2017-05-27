@@ -40,6 +40,8 @@ def main(sc):
 	filesPaths = ""
 	
 	for path in files:
+		print filesPaths
+		print path
 		filesPaths = filesPaths + path + ","
 		
 	text_file = sc.textFile(filesPaths).cache()
