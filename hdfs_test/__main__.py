@@ -47,6 +47,7 @@ flushAll = args.flushAll
 loading = args.load
 ti = args.testIterations
 sparkArguments = args.sparkArguments
+zip = args.zip
 
 if firstRun:
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -mkdir /user/", shell=True)
