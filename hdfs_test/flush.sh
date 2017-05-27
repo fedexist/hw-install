@@ -12,4 +12,5 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 #!/bin/sh
+HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/dataset
 HADOOP_USER_NAME=hdfs hadoop fs -expunge

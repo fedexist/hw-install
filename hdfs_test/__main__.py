@@ -61,7 +61,7 @@ if firstRun:
 
 
 if flushAll:
-	process = subprocess.Popen("rm -f test.csv", shell=True)
+	process = subprocess.Popen("rm -r -f ./dataset/", shell=True)
 	process.wait()
 if flush or flushAll:
 	process = subprocess.Popen("sh flush.sh", shell=True)
@@ -105,13 +105,31 @@ if testing:
 
 	
 	for x in range(0, int(ti)):
-		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rHdfsWRam.py" % sparkArguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		process.wait()
-		out,err = process.communicate()
-		
-		print out[::-1]
-		
+	
+		start = timer()
 		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rRamWHdfs.py" % sparkArguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		process.wait()
+		end = timer()
+		
 		out,err = process.communicate()
+		
+		findString = "Scrittura su HDFS: "
+		
+		findIntBegin = out.find(findString) + len(findString)
+		findIntEnd = findIntBegin + len(str(end-start))
+		
+		print out[findIntBegin:findIntEnd]
 
+		start = timer()
+		process = subprocess.Popen("sudo -u hdfs spark-submit %s ./hdfs_test/rHdfsWRam.py" % sparkArguments, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		process.wait()
+		end = timer()
+		
+		out,err = process.communicate()
+		
+		findString = "Lettura da HDFS e scrittura su RAM: "
+		
+		findIntBegin = out.find(findString) + len(findString)
+		findIntEnd = findIntBegin + len(str(end-start))
+		
+		print out[findIntBegin:findIntEnd]
