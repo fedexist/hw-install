@@ -67,3 +67,7 @@ host-groups:
       - name: NODEMANAGER
       - name: DATANODE
       - name: METRICS_MONITOR
+      - name: HDFS_CLIENT
+      - name: YARN_CLIENT
+      - name: SPARK2_CLIENT
+      - name: MAPREDUCE2_CLIENT

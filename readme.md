@@ -26,7 +26,7 @@ It includes:
 
 ## Usage
 
-1. Install ```pip```
+1. Install ```pip``` and ```mysql-server```
 2. ```git clone https://github.com/fedexist/hw-install.git```
 3. ```cd hw-install```
 4. ```make init```
@@ -82,28 +82,28 @@ Your original configuration file will be overwritten with the new cluster config
 
 To test the file throughput run ```python -m hdfs_test``` with the use of the following arguments
 
-  -h, --help            show this help message and exit
-  -fr, --firstRun       With this parameter the script will prepare Hdfs
-                        environment for testing
-  -u URL, --URL URL     URL of the dataset to use for testing, the file must
-                        be one or more CSVs in a zip or tar.gz archive or a
-                        plain csv, if this parameter is not specified the
-                        dataset, it is assumed to have been downloaded already
-                        and present in dataset folder(default: blank)
-  -z ZIP, --zip ZIP     Says what unpacker to use, zip, tar or none (default:
-                        zip)
-  -l, --load            Use this parameter to load the dataset to hdfs
-  -t, --testing         With this parameter the script will test the reading
-                        and writing throughput of the HDFS
-  -f, --flush           With this parameter the script will only clean up the
-                        HDFS
-  -fa, --flushAll       With this parameter the script will clean up the HDFS
-                        and local files
-  -ti TESTITERATIONS, --testIterations TESTITERATIONS
-                        Number of iterations done for testing (default: 1)
-  -sa SPARKARGUMENTS, --sparkArguments SPARKARGUMENTS
-                        The parameters to be sent to spark (default: "--master
-                        yarn --num-executors 1 --executor-memory 1G")
+      -h, --help            show this help message and exit
+      -fr, --firstRun       With this parameter the script will prepare Hdfs
+                            environment for testing
+      -u URL, --URL URL     URL of the dataset to use for testing, the file must
+                            be one or more CSVs in a zip or tar.gz archive or a
+                            plain csv, if this parameter is not specified the
+                            dataset, it is assumed to have been downloaded already
+                            and present in dataset folder(default: blank)
+      -z ZIP, --zip ZIP     Says what unpacker to use, zip, tar or none (default:
+                            zip)
+      -l, --load            Use this parameter to load the dataset to hdfs
+      -t, --testing         With this parameter the script will test the reading
+                            and writing throughput of the HDFS
+      -f, --flush           With this parameter the script will only clean up the
+                            HDFS
+      -fa, --flushAll       With this parameter the script will clean up the HDFS
+                            and local files
+      -ti TESTITERATIONS, --testIterations TESTITERATIONS
+                            Number of iterations done for testing (default: 1)
+      -sa SPARKARGUMENTS, --sparkArguments SPARKARGUMENTS
+                            The parameters to be sent to spark (default: "--master
+                            yarn --num-executors 1 --executor-memory 1G")
 
 For the first run, thus, use 
 
