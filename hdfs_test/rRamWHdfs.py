@@ -49,7 +49,9 @@ def main(sc):
 	start = timer()
 	text_file.saveAsTextFile("hdfs:///user/admin/testing/tmp")
 	end = timer()
-
+	
+	text_file.unpersist()
+	
 	print "Scrittura su HDFS: " + str(end-start)
 
 

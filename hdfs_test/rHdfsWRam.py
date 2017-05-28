@@ -35,6 +35,8 @@ def main(sc):
 	text_file = sc.textFile("hdfs:///user/admin/testing/tmp").cache()
 	text_file.count()
 	end = timer()
+	
+	text_file.unpersist()
 		
 	process = subprocess.Popen("HADOOP_USER_NAME=hdfs hadoop fs -rm -r -f -skipTrash /user/admin/testing/tmp", shell=True)
 	print "Lettura da HDFS e scrittura su RAM: " + str(end-start)
