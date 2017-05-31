@@ -43,7 +43,9 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 		print "Error in ssh login:\n" + e.get_trace()
 
 
-def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server, mysql_password, default_password):
+def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server
+          # , mysql_password, default_password
+         ):
 	try:
 		ssh_session = pxssh.pxssh(timeout=7200)
 		print "Logging in to current host: %s" % _current_host.IP
@@ -124,10 +126,10 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server, 
 		ssh_session.sendline("ambari-agent start")
 		ssh_session.prompt()
 		print "Starting mysqld, granting privileges to hive"
-		ssh_session.sendline("systemctl restart mysqld; mysql -u root -p%s -h localhost "
-		                     "-e \"GRANT ALL PRIVILEGES ON *.* TO  'hive'@'%%' IDENTIFIED BY '%s';"
-		                     "FLUSH PRIVILEGES;\"" % (mysql_password, default_password))
-		ssh_session.prompt()
+		# ssh_session.sendline("systemctl restart mysqld; mysql -u root -p%s -h localhost "
+		#                      "-e \"GRANT ALL PRIVILEGES ON *.* TO  'hive'@'%%' IDENTIFIED BY '%s';"
+		#                     "FLUSH PRIVILEGES;\"" % (mysql_password, default_password))
+		# ssh_session.prompt()
 		
 		print "Logging out"
 		ssh_session.logout()
