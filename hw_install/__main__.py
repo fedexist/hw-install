@@ -105,9 +105,24 @@ for host in host_list:
 	ssh_setup(host, username, password, scripts, is_ambari_server=False)
 	setup(host, username, ambari_server.FQDN, etc_host, is_ambari_server=False)
 
+configurations = []
+core_site = {
+			"core-site": {
+				"properties": {
+					"hadoop.proxyuser.root.groups": "*",
+					"hadoop.proxyuser.root.hosts": "*",
+					"hadoop.proxyuser.hive.hosts": "*",
+					"hadoop.proxyuser.hive.groups": "*"
+				}
+			}
+		}
+configurations.append(core_site)
+
+# fornire privilegi a utente hive in mysql-server
+
 print "----------------------"
 print "Now installing specified cluster"
 print "----------------------"
 
 install_cluster(ambari_server, cluster_name=cluster_name, blueprint_name=blueprint_name, blueprints=blueprints,
-                host_groups=host_groups, default_password=default_password)
+                host_groups=host_groups, default_password=default_password, configurations=configurations)

@@ -31,7 +31,7 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 	subprocess.Popen("chmod 755 %saskpass.sh" % _scripts, shell=True)
 	subprocess.Popen(shell_command, shell=True)
 	# Makes sure ssh-copy-id is actually terminated
-	time.sleep(20)
+	time.sleep(10)
 	
 	try:
 		if not is_ambari_server:
@@ -43,7 +43,7 @@ def ssh_setup(_current_host, _username, _password, _scripts, is_ambari_server):
 		print "Error in ssh login:\n" + e.get_trace()
 
 
-def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
+def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server, mysql_password, default_password):
 	try:
 		ssh_session = pxssh.pxssh(timeout=7200)
 		print "Logging in to current host: %s" % _current_host.IP
@@ -98,7 +98,7 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 		ssh_session.prompt()
 		ssh_session.sendline("systemctl restart network.service")
 		ssh_session.prompt()
-		time.sleep(5) #wait for network restart to take place
+		time.sleep(5) # wait for network restart to take place
 		
 		ssh_session.sendline("yum install -y wget && "
 		                     "wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.4.2.0/ambari.repo "
@@ -123,7 +123,12 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server):
 		ssh_session.prompt()
 		ssh_session.sendline("ambari-agent start")
 		ssh_session.prompt()
-	
+		print "Starting mysqld, granting privileges to hive"
+		ssh_session.sendline("systemctl restart mysqld; mysql -u root -p%s -h localhost "
+		                     "-e \"GRANT ALL PRIVILEGES ON *.* TO  'hive'@'%%' IDENTIFIED BY '%s';"
+		                     "FLUSH PRIVILEGES;\"" % (mysql_password, default_password))
+		ssh_session.prompt()
+		
 		print "Logging out"
 		ssh_session.logout()
 	except pxssh.ExceptionPxssh as e:
@@ -141,7 +146,7 @@ def update(old_host, _username, new_host_list):
 		ssh_session.logout()
 
 
-def install_cluster(ambari_server, cluster_name, blueprint_name, blueprints, host_groups, default_password):
+def install_cluster(ambari_server, cluster_name, blueprint_name, blueprints, host_groups, default_password, configurations):
 	print "Opening connection to Ambari server"
 	client = Ambari(ambari_server.FQDN, port=8080, username='admin', password='admin')
 	
@@ -150,4 +155,5 @@ def install_cluster(ambari_server, cluster_name, blueprint_name, blueprints, hos
 	
 	print "Creating cluster"
 	client.clusters.create(cluster_name, blueprint=blueprint_name,
-	                       host_groups=host_groups, default_password=default_password).wait(timeout=1800, interval=30)
+	                       host_groups=host_groups, default_password=default_password,
+	                       configurations=configurations).wait(timeout=1800, interval=30)
