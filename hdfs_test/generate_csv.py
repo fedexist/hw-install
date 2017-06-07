@@ -5,7 +5,7 @@ import csv
 import string
 
 
-def integer_csv(rows, schema, delimiter, columns):
+def integer_csv(rows, schema, delimiter, columns, output):
 	random.seed(42)
 	generators = []
 	char_set = (string.ascii_letters + string.digits +
@@ -21,9 +21,10 @@ def integer_csv(rows, schema, delimiter, columns):
 			elif column == 'float':
 				generators.append(lambda: random.random())
 
-	writer = csv.writer(sys.stdout, delimiter=delimiter)
-	for x in xrange(rows):
-		writer.writerow([g() for g in generators])
+	with open(output, 'w+') as output_file:
+		writer = csv.writer(output_file, delimiter=delimiter)
+		for x in xrange(rows):
+			writer.writerow([g() for g in generators])
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(
@@ -38,6 +39,7 @@ if __name__ == '__main__':
 						choices=['int', 'str', 'float'],
 						help='list of column types to generate')
 	parser.add_argument('-c', '--columns', type=int, default=4, required=True)
+	parser.add_argument('-o', '--output', required=False)
 
 	args = parser.parse_args()
-integer_csv(args.rows, args.schema, args.delimiter, args.columns)
+integer_csv(args.rows, args.schema, args.delimiter, args.columns, args.output)
