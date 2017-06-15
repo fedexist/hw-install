@@ -144,6 +144,6 @@ if testing:
 		
 		rTimes.append(float(out))
 		
-	print "Scrittura su Hdfs tramite Spark compiuta in un tempo medio di " + str(len(wTimes)/sum(wTimes)) + "\n"
+	print "Scrittura su Hdfs tramite Spark compiuta in un tempo medio di " + str(sum(wTimes)/len(wTimes)) + "\n"
 
-	print "Lettura da Hdfs tramite Spark compiuta in un tempo medio di " + str(len(rTimes)/sum(rTimes)) + "\n"
+	print "Lettura da Hdfs tramite Spark compiuta in un tempo medio di " + str(sum(rTimes)/len(rTimes)) + "\n"
