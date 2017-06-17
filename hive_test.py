@@ -7,7 +7,7 @@ if __name__ == '__main__':
         parser = argparse.ArgumentParser(
                 description='Run all queries',
                 epilog='''"So we beat on, boats against the current, borne back ceaselessly into the past."''')
-        parser.add_argument('queryFolder', type=str, help='Path to folder containing the queries', default='./')
+        parser.add_argument('-f''--folder', type=str, help='Path to folder containing the queries', default='./')
         parser.add_argument('-d', 'database', type=str, help='Path to folder containing the queries',
                             default='', required=True)
         parser.add_argument('-n', '--username', type=str, help='Path to folder containing the queries', default='admin')
