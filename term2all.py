@@ -51,7 +51,7 @@ except IOError as err:
 	exit(-1)
 
 print "----------------------"
-print "Step %1 of %s " % str(len(host_list) + 1)
+print "Step 1 of %s " % str(len(host_list) + 1)
 print "----------------------"
 process = subprocess.Popen("%s" % script, shell=True)
 process.wait()
