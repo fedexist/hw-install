@@ -55,15 +55,15 @@ def setup(_current_host, _username, ambari_server, _etc_host, is_ambari_server
 			print "Error in login: %s" % e
 			exit(-1)
 		print "Increasing maximum number of file descriptors available"
-		ssh_session.sendline("echo \"fs.file-max = 10000\" | cat - >> /etc/sysctl.conf")
+		ssh_session.sendline("echo \"fs.file-max = 1000000\" | cat - >> /etc/sysctl.conf")
 		ssh_session.prompt()
-		ssh_session.sendline("echo \"* soft nofile 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.sendline("echo \"* soft nofile 1000000\" | cat - >> /etc/security/limits.conf")
 		ssh_session.prompt()
-		ssh_session.sendline("echo \"* hard nofile 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.sendline("echo \"* hard nofile 1000000\" | cat - >> /etc/security/limits.conf")
 		ssh_session.prompt()
-		ssh_session.sendline("echo \"* soft nproc 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.sendline("echo \"* soft nproc 1000000\" | cat - >> /etc/security/limits.conf")
 		ssh_session.prompt()
-		ssh_session.sendline("echo \"* hard nproc 10000\" | cat - >> /etc/security/limits.conf")
+		ssh_session.sendline("echo \"* hard nproc 1000000\" | cat - >> /etc/security/limits.conf")
 		ssh_session.prompt()
 		print "Installing ntp and enabling ntpd"
 		ssh_session.sendline("yum install -y ntp && systemctl enable ntpd && systemctl start ntpd")
