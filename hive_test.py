@@ -19,11 +19,11 @@ if __name__ == '__main__':
         print os.getcwd()
         os.chdir(args.folder)
         print os.getcwd()
-        for current_file in reversed(os.listdir(os.getcwd())):
+        for current_file in reversed(sorted(os.listdir(os.getcwd()))):
             with open("./hive_test.log", 'a') as logger:
                 if current_file.endswith(".sql"):
                     for i in range(5):
-                        logger.write("%s: Executing (%s) %s " % (datetime.datetime.utcnow(), str(i),  current_file))
+                        logger.write("%s: Executing (%s) %s\n" % (datetime.datetime.utcnow(), str(i),  current_file))
                         process = subprocess.Popen("beeline -i %s "
                                                    "-u \"jdbc:hive2://master-2.localdomain:2181,"
                                                    "master-1.localdomain:2181/%s;serviceDiscoveryMode=zooKeeper;"
@@ -32,4 +32,4 @@ if __name__ == '__main__':
                                                    % (os.path.join(os.getcwd(), "testbench.settings"), args.database, args.username, args.password, current_file),
                                                    shell=True)
                         process.wait()
-                        logger.write("%s: Finished executing (%s) %s " % (datetime.datetime.utcnow(), str(i), current_file))
+                        logger.write("%s: Finished executing (%s) %s\n" % (datetime.datetime.utcnow(), str(i), current_file))
