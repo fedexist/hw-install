@@ -21,8 +21,6 @@ import time
 from pexpect import pxssh
 
 def send2all(configuration,script,nm):
-
-	args = parser.parse_args()
 		
 	Host = namedtuple("Host", "IP FQDN")
 
@@ -51,7 +49,7 @@ def send2all(configuration,script,nm):
 		process = subprocess.Popen("%s" % script, shell=True)
 		process.wait()
 	else:
-		print("Skipping master")
+		print "Skipping master"
 		
 	for host in host_list:
 		print "----------------------"

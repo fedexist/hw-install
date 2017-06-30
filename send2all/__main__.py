@@ -29,7 +29,7 @@ parser.add_argument('-s', '--script', help="Script to run on each machine", requ
 parser.add_argument('-nm', '--noMaster', help="If set the script will not run on master",
                     action="store_true")
 
-	
+args = parser.parse_args()
 configuration = args.configuration
 script = args.script
 nm = args.noMaster
