@@ -25,7 +25,8 @@ from pexpect import pxssh
 parser = argparse.ArgumentParser(description="Send script to each machine")
 parser.add_argument('-c', '--configuration', help="Path to the yaml configuration file", required=True)
 parser.add_argument('-s', '--script', help="Script to run on each machine", required=True)
-parser.add_argument('-nm', '--noMaster', help="True if master should not run the script", required=False, default = False)
+parser.add_argument('-nm', '--noMaster', help="If set the script will not run on master",
+                    action="store_true")
 
 	
 args = parser.parse_args()
