@@ -25,6 +25,8 @@ from pexpect import pxssh
 parser = argparse.ArgumentParser(description="Send script to each machine")
 parser.add_argument('-c', '--configuration', help="Path to the yaml configuration file", required=True)
 parser.add_argument('-s', '--script', help="Script to run on each machine", required=True)
+parser.add_argument('-nm', '--noMaster', help="True if master should not run the script", required=False, default = False)
+
 	
 args = parser.parse_args()
 	
@@ -33,6 +35,7 @@ Host = namedtuple("Host", "IP FQDN")
 host_list = []
 configuration = args.configuration
 script = args.script
+nm = args.noMaster
 
 try:
 	with open(configuration, 'r') as cluster_setup:
@@ -53,8 +56,9 @@ except IOError as err:
 print "----------------------"
 print "Step 1 of %s " % str(len(host_list) + 1)
 print "----------------------"
-process = subprocess.Popen("%s" % script, shell=True)
-process.wait()
+if !nm:
+	process = subprocess.Popen("%s" % script, shell=True)
+	process.wait()
 	
 for host in host_list:
 	print "----------------------"
