@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
+#TO DO LIST:
+#ADD ASYNCHRONOUS MODE AND REMOTE LOGGING
+#ADD OUTPUT
+
 import argparse
 import os
 from ruamel import yaml
