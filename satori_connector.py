@@ -5,7 +5,7 @@ import json
 
 from satori.rtm.client import make_client, SubscriptionMode
 
-channel = "transportation"
+channel = "air-traffic"
 endpoint = "wss://open-data.api.satori.com"
 appkey = "8698EC0C7f87BB5Dc01526F0Ecd2bBFc"
 
@@ -20,7 +20,8 @@ def main():
         class SubscriptionObserver(object):
             def on_subscription_data(self, data):
                 for in_message in data['messages']:
-                    mailbox.append(json.dumps(in_message))
+                    if all(len(str(x)) > 0 for x in in_message.values()):
+                        mailbox.append(json.dumps(in_message))
                 got_message_event.set()
         subscription_observer = SubscriptionObserver()
         client.subscribe(
