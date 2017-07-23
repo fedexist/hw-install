@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import threading
 import json
+import random
 
 from satori.rtm.client import make_client, SubscriptionMode
 
@@ -20,7 +21,7 @@ def main():
         class SubscriptionObserver(object):
             def on_subscription_data(self, data):
                 for in_message in data['messages']:
-                    if all(len(str(x)) > 0 for x in in_message.values()):
+                    if bool(random.getrandbits(1)) and all(len(str(x)) > 0 for x in in_message.values()):
                         mailbox.append(json.dumps(in_message))
                 got_message_event.set()
         subscription_observer = SubscriptionObserver()
