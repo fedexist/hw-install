@@ -14,6 +14,7 @@
 
 import argparse
 import os
+import json
 from ruamel import yaml
 from collections import namedtuple
 from hw_install import ssh_setup, setup, install_cluster
@@ -29,8 +30,11 @@ parser.add_argument('-s', '--scripts', help="Path to the helper scripts askpass.
                                             " default './helpers/")
 parser.add_argument('-d', '--defaultpassword', help="This is the default password for any Hortonworks service"
                                                     " default 'secret-password'", required=True)
+parser.add_argument('-cc', '--clusterconfig', help="JSON file containing the configuration from the blueprint "
+                                                   "'configurations' attribute")
 parser.set_defaults(username='root', password='', configuration='',
                     scripts='./helpers/', defaultpassword='secret-password')
+
 args = parser.parse_args()
 	
 Host = namedtuple("Host", "IP FQDN")
@@ -39,6 +43,7 @@ host_list = []
 password = args.password
 username = args.username
 configuration = args.configuration
+clusterconfig = args.clusterconfig
 scripts = args.scripts
 default_password = args.defaultpassword
 etc_host = ""
@@ -46,7 +51,8 @@ blueprint_name = ""
 blueprints = ""
 host_groups = {}
 cluster_name = ""
-
+ambari_repo = ""
+configurations = list()
 ambari_server = None
 	
 if not os.path.exists("%saskpass.sh" % scripts):
@@ -78,6 +84,7 @@ try:
 		blueprints = config_file["Blueprints"]
 		blueprint_name = config_file["blueprint-name"]
 		cluster_name = config_file["cluster-name"]
+		ambari_repo = config_file["ambari-repo"]
 		
 except yaml.YAMLError as err:
 	print "Error in configuration file!\n" + err.message
@@ -96,27 +103,21 @@ print "----------------------"
 print "Step 1 of %s " % str(len(host_list) + 1)
 print "----------------------"
 ssh_setup(ambari_server, username, password, scripts, is_ambari_server=True)
-setup(ambari_server, username, ambari_server.FQDN, etc_host, is_ambari_server=True)
+setup(ambari_server, username, ambari_repo, ambari_server.FQDN, etc_host, is_ambari_server=True)
 
+# Then setup all of the other hosts
 for host in host_list:
 	print "----------------------"
 	print "Step %s of %s " % (str(host_list.index(host) + 2), str(len(host_list) + 1))
 	print "----------------------"
 	ssh_setup(host, username, password, scripts, is_ambari_server=False)
-	setup(host, username, ambari_server.FQDN, etc_host, is_ambari_server=False)
+	setup(host, username, ambari_repo, ambari_server.FQDN, etc_host, is_ambari_server=False)
 
-configurations = []
-core_site = {
-			"core-site": {
-				"properties": {
-					"hadoop.proxyuser.root.groups": "*",
-					"hadoop.proxyuser.root.hosts": "*",
-					"hadoop.proxyuser.hive.hosts": "*",
-					"hadoop.proxyuser.hive.groups": "*"
-				}
-			}
-		}
-configurations.append(core_site)
+# Open configuration exported from another cluster
+if args.clusterconfig is not None:
+	with open(clusterconfig, 'r') as config_json:
+		config_dict = json.loads(config_json.read())
+		configurations = config_dict['configurations']
 
 # fornire privilegi a utente hive in mysql-server
 

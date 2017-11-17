@@ -2,13 +2,12 @@ from __future__ import print_function
 
 import threading
 import json
-import random
 
 from satori.rtm.client import make_client, SubscriptionMode
 
 channel = "air-traffic"
 endpoint = "wss://open-data.api.satori.com"
-appkey = "8698EC0C7f87BB5Dc01526F0Ecd2bBFc"
+appkey = "E3BEf135eA53D785B647c3bC8FfcA506"
 
 
 def main():
@@ -21,7 +20,7 @@ def main():
         class SubscriptionObserver(object):
             def on_subscription_data(self, data):
                 for in_message in data['messages']:
-                    if bool(random.getrandbits(1)) and all(len(str(x)) > 0 for x in in_message.values()):
+                    if all(len(str(x)) > 0 for x in in_message.values()):
                         mailbox.append(json.dumps(in_message))
                 got_message_event.set()
         subscription_observer = SubscriptionObserver()

@@ -42,6 +42,7 @@ username = args.username
 configuration = args.configuration
 scripts = args.scripts
 etc_host = ""
+ambari_repo = ""
 config_file = None
 
 if not os.path.exists("%saskpass.sh" % scripts):
@@ -60,6 +61,7 @@ try:
 		                     FQDN=config_file['ambari-server']['FQDN'])
 		old_host_list.append(ambari_server)
 		etc_host = "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
+		ambari_repo = config_file["ambari-repo"]
 		
 		for old_host in config_file['hosts']:
 			old_host_list.append(Host(IP=old_host['IP'], FQDN=old_host['FQDN']))
@@ -83,13 +85,13 @@ for old_host in old_host_list:
 print "Setting up new hosts"
 for host in new_host_list:
 	hw_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
-	hw_install.setup(host, username, config_file['ambari-server']['FQDN'], etc_host, False)
+	hw_install.setup(host, username, ambari_repo, config_file['ambari-server']['FQDN'], etc_host, False)
 
 # Write configuration file
 
 print "Writing new configuration file"
 
-with open("config" + str(datetime.now()).split('.')[0] + ".yaml", 'w') as cluster_setup:
+with open("config" + datetime.now().strftime("%Y%m%dT%H%M%S") + ".yaml", 'w') as cluster_setup:
 	new_hosts = config_file.pop('new-hosts')
 	for new_host in new_hosts:
 		config_file['hosts'].append(new_host)
