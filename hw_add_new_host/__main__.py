@@ -46,55 +46,53 @@ ambari_repo = ""
 config_file = None
 
 if not os.path.exists("%saskpass.sh" % scripts):
-	print "Can't find %saskpass.sh!" % scripts
-	exit(-1)
+    print "Can't find %saskpass.sh!" % scripts
+    exit(-1)
 
 if not os.path.exists("%sssh_copy_id_script.sh" % scripts):
-	print "Can't find %sssh_copy_id_script.sh!" % scripts
-	exit(-1)
+    print "Can't find %sssh_copy_id_script.sh!" % scripts
+    exit(-1)
 
 print "Processing configuration file"
 try:
-	with open(configuration, 'r') as cluster_setup:
-		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
-		ambari_server = Host(IP=config_file['ambari-server']['IP'],
-		                     FQDN=config_file['ambari-server']['FQDN'])
-		old_host_list.append(ambari_server)
-		etc_host = "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
-		ambari_repo = config_file["ambari-repo"]
-		
-		for old_host in config_file['hosts']:
-			old_host_list.append(Host(IP=old_host['IP'], FQDN=old_host['FQDN']))
-			etc_host += "%s %s\n" % (old_host['IP'], old_host['FQDN'])
-			
-		for new_host in config_file['new-hosts']:
-			new_host_list.append(Host(IP=new_host['IP'], FQDN=new_host['FQDN']))
-			etc_host += "%s %s\n" % (new_host['IP'], new_host['FQDN'])
-			
+    with open(configuration, 'r') as cluster_setup:
+        config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
+        ambari_server = Host(IP=config_file['ambari-server']['IP'],
+                             FQDN=config_file['ambari-server']['FQDN'])
+        old_host_list.append(ambari_server)
+        etc_host = "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
+        ambari_repo = config_file["ambari-repo"]
+
+        for old_host in config_file['hosts']:
+            old_host_list.append(Host(IP=old_host['IP'], FQDN=old_host['FQDN']))
+            etc_host += "%s %s\n" % (old_host['IP'], old_host['FQDN'])
+
+        for new_host in config_file['new-hosts']:
+            new_host_list.append(Host(IP=new_host['IP'], FQDN=new_host['FQDN']))
+            etc_host += "%s %s\n" % (new_host['IP'], new_host['FQDN'])
+
 except yaml.YAMLError as err:
-	print "Error in configuration file!\n" + err.message
-	exit(-1)
+    print "Error in configuration file!\n" + err.message
+    exit(-1)
 except IOError as err:
-	print "Cannot find configuration file!\n" + err.message
-	exit(-1)
+    print "Cannot find configuration file!\n" + err.message
+    exit(-1)
 
 print "Updating old hosts"
 for old_host in old_host_list:
-	hw_install.update(old_host, username, new_host_list)
+    hw_install.update(old_host, username, new_host_list)
 
 print "Setting up new hosts"
 for host in new_host_list:
-	hw_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
-	hw_install.setup(host, username, ambari_repo, config_file['ambari-server']['FQDN'], etc_host, False)
+    hw_install.ssh_setup(host, username, password, scripts, is_ambari_server=False)
+    hw_install.setup(host, username, ambari_repo, config_file['ambari-server']['FQDN'], etc_host, False)
 
 # Write configuration file
 
 print "Writing new configuration file"
 
 with open("config" + datetime.now().strftime("%Y%m%dT%H%M%S") + ".yaml", 'w') as cluster_setup:
-	new_hosts = config_file.pop('new-hosts')
-	for new_host in new_hosts:
-		config_file['hosts'].append(new_host)
-	yaml.dump(config_file, cluster_setup, Dumper=yaml.RoundTripDumper)
-
-
+    new_hosts = config_file.pop('new-hosts')
+    for new_host in new_hosts:
+        config_file['hosts'].append(new_host)
+    yaml.dump(config_file, cluster_setup, Dumper=yaml.RoundTripDumper)

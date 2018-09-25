@@ -1,9 +1,9 @@
 cluster-name: cluster_name
 blueprint-name: blueprint_name
-ambari-repo: http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.5.1.0/ambari.repo
+ambari-repo: http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.6.2.2/ambari.repo
 Blueprints:
   stack_name: HDP
-  stack_version: 2.6
+  stack_version: 2.6.5
 ambari-server:
   IP: 192.168.1.1
   FQDN: master-1.localdomain

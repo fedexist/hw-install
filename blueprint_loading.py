@@ -17,17 +17,17 @@ default_password = args.defaultpassword
 Host = namedtuple("Host", "IP FQDN")
 
 with open(configuration, 'r') as cluster_setup:
-	config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
-	ambari_server = Host(IP=config_file['ambari-server']['IP'],
-	                     FQDN=config_file['ambari-server']['FQDN'])
-	
-	host_groups = config_file['host-groups']
-	for group in host_groups:
-		group['cardinality'] = str(len(group['hosts']))
-	
-	blueprints = config_file["Blueprints"]
-	blueprint_name = config_file["blueprint-name"]
-	cluster_name = config_file["cluster-name"]
+    config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
+    ambari_server = Host(IP=config_file['ambari-server']['IP'],
+                         FQDN=config_file['ambari-server']['FQDN'])
+
+    host_groups = config_file['host-groups']
+    for group in host_groups:
+        group['cardinality'] = str(len(group['hosts']))
+
+    blueprints = config_file["Blueprints"]
+    blueprint_name = config_file["blueprint-name"]
+    cluster_name = config_file["cluster-name"]
 
 hw_install.install_cluster(ambari_server, cluster_name=cluster_name, blueprint_name=blueprint_name,
                            blueprints=blueprints, host_groups=host_groups, default_password=default_password)

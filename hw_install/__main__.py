@@ -20,7 +20,6 @@ from collections import namedtuple
 from hw_install import ssh_setup, setup, install_cluster
 from pexpect import run
 
-
 # Parsing script arguments
 parser = argparse.ArgumentParser(description="Set up Hortonworks cluster")
 parser.add_argument('-p', '--password', help='Password used for every machine of the cluster', required=True)
@@ -36,7 +35,7 @@ parser.set_defaults(username='root', password='', configuration='',
                     scripts='./helpers/', defaultpassword='secret-password')
 
 args = parser.parse_args()
-	
+
 Host = namedtuple("Host", "IP FQDN")
 
 host_list = []
@@ -54,44 +53,44 @@ cluster_name = ""
 ambari_repo = ""
 configurations = list()
 ambari_server = None
-	
+
 if not os.path.exists("%saskpass.sh" % scripts):
-	print "Can't find %saskpass.sh!" % scripts
-	exit(-1)
-	
+    print "Can't find %saskpass.sh!" % scripts
+    exit(-1)
+
 if not os.path.exists("%sssh_copy_id_script.sh" % scripts):
-	print "Can't find %sssh_copy_id_script.sh!" % scripts
-	exit(-1)
-	
+    print "Can't find %sssh_copy_id_script.sh!" % scripts
+    exit(-1)
+
 print "Helper scripts found, now processing cluster setup"
 
 try:
-	with open(configuration, 'r') as cluster_setup:
-		config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
-		ambari_server = Host(IP=config_file['ambari-server']['IP'],
-		                     FQDN=config_file['ambari-server']['FQDN'])
-		etc_host += "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
-		for host in config_file['hosts']:
-			new_host = Host(IP=host['IP'],
-				            FQDN=host['FQDN'])
-			host_list.append(new_host)
-			etc_host += "%s %s\n" % (new_host.IP, new_host.FQDN)
-			
-		host_groups = config_file['host-groups']
-		for group in host_groups:
-			group['cardinality'] = str(len(group['hosts']))
-		
-		blueprints = config_file["Blueprints"]
-		blueprint_name = config_file["blueprint-name"]
-		cluster_name = config_file["cluster-name"]
-		ambari_repo = config_file["ambari-repo"]
-		
+    with open(configuration, 'r') as cluster_setup:
+        config_file = yaml.load(cluster_setup.read(), Loader=yaml.Loader)
+        ambari_server = Host(IP=config_file['ambari-server']['IP'],
+                             FQDN=config_file['ambari-server']['FQDN'])
+        etc_host += "%s %s\n" % (ambari_server.IP, ambari_server.FQDN)
+        for host in config_file['hosts']:
+            new_host = Host(IP=host['IP'],
+                            FQDN=host['FQDN'])
+            host_list.append(new_host)
+            etc_host += "%s %s\n" % (new_host.IP, new_host.FQDN)
+
+        host_groups = config_file['host-groups']
+        for group in host_groups:
+            group['cardinality'] = str(len(group['hosts']))
+
+        blueprints = config_file["Blueprints"]
+        blueprint_name = config_file["blueprint-name"]
+        cluster_name = config_file["cluster-name"]
+        ambari_repo = config_file["ambari-repo"]
+
 except yaml.YAMLError as err:
-	print "Error in configuration file!\n" + err.message
-	exit(-1)
+    print "Error in configuration file!\n" + err.message
+    exit(-1)
 except IOError as err:
-	print "Cannot find configuration file!\n" + err.message
-	exit(-1)
+    print "Cannot find configuration file!\n" + err.message
+    exit(-1)
 
 print "Generating key pair"
 run("ssh-keygen -q -N \"\" ", events={'\w': '\r'})
@@ -107,17 +106,17 @@ setup(ambari_server, username, ambari_repo, ambari_server.FQDN, etc_host, is_amb
 
 # Then setup all of the other hosts
 for host in host_list:
-	print "----------------------"
-	print "Step %s of %s " % (str(host_list.index(host) + 2), str(len(host_list) + 1))
-	print "----------------------"
-	ssh_setup(host, username, password, scripts, is_ambari_server=False)
-	setup(host, username, ambari_repo, ambari_server.FQDN, etc_host, is_ambari_server=False)
+    print "----------------------"
+    print "Step %s of %s " % (str(host_list.index(host) + 2), str(len(host_list) + 1))
+    print "----------------------"
+    ssh_setup(host, username, password, scripts, is_ambari_server=False)
+    setup(host, username, ambari_repo, ambari_server.FQDN, etc_host, is_ambari_server=False)
 
 # Open configuration exported from another cluster
 if args.clusterconfig is not None:
-	with open(clusterconfig, 'r') as config_json:
-		config_dict = json.loads(config_json.read())
-		configurations = config_dict['configurations']
+    with open(clusterconfig, 'r') as config_json:
+        config_dict = json.loads(config_json.read())
+        configurations = config_dict['configurations']
 
 # fornire privilegi a utente hive in mysql-server
 

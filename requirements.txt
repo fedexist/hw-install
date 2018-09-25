@@ -2,4 +2,3 @@ ruamel.yaml
 pexpect
 setuptools
 python-ambariclient
-satori-rtm-sdk
